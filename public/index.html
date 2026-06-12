@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Knowledge Repository & SOP Management - Ocean Services</title>
+  <!-- Google Fonts: Outfit (headings) and Inter (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <!-- FontAwesome for Premium Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Core Application Stylesheet -->
+  <link rel="stylesheet" href="app.css">
+</head>
+
+<body>
+
+  <!-- GLOBAL BACKGROUND EFFECTS -->
+  <div class="ocean-gradient-bg"></div>
+  <div class="ocean-bubbles"></div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- 1. LOGIN SCREEN -->
+  <main id="login-screen" class="login-wrapper active-screen">
+    <div class="login-card">
+      <div class="login-header">
+        <div class="logo-icon"><i class="fa-solid fa-anchor"></i></div>
+        <h1>Oceanic Services</h1>
+        <p>Knowledge Repository & SOP Management System</p>
+      </div>
+      <form id="login-form" class="login-form">
+        <div class="form-group">
+          <label for="login-email">Department Email</label>
+          <div class="input-with-icon">
+            <i class="fa-solid fa-envelope"></i>
+            <input type="email" id="login-email" required placeholder="e.g. analyst@ocean.gov">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="login-password">Security Password</label>
+          <div class="input-with-icon">
+            <i class="fa-solid fa-lock"></i>
+            <input type="password" id="login-password" required placeholder="••••••••">
+          </div>
+        </div>
+        <div class="login-help-info">
+          <span>Admin: admin@ocean.gov (admin123)</span>
+          <span>User: user@ocean.gov (user123)</span>
+        </div>
+        <button type="submit" id="btn-login-submit" class="btn btn-primary btn-block">
+          Authenticate <i class="fa-solid fa-arrow-right"></i>
+        </button>
+      </form>
+    </div>
+  </main>
+
+  <!-- MAIN APP CONTAINER (HIDDEN UNTIL LOGIN) -->
+  <div id="app-container" class="app-layout">
+
+    <!-- 2. SIDEBAR NAVIGATION -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <i class="fa-solid fa-wave-square brand-icon"></i>
+        <div class="brand-text">
+          <h2>OceanServices</h2>
+          <span>Knowledge Hub</span>
+        </div>
+      </div>
+
+      <div class="user-profile-badge">
+        <div class="avatar"><i class="fa-solid fa-user-shield" id="user-role-icon"></i></div>
+        <div class="user-details">
+          <h4 id="sidebar-user-name">Loading...</h4>
+          <span id="sidebar-user-role">Analyst</span>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <ul>
+          <li>
+            <a href="#" class="nav-link active" data-screen="Dashboard" id="nav-dashboard">
+              <i class="fa-solid fa-chart-line"></i> <span>Dashboard</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link" data-screen="sops" id="nav-sops">
+              <i class="fa-solid fa-book-bookmark"></i> <span>SOP lifecycle</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link" data-screen="documents" id="nav-documents">
+              <i class="fa-solid fa-file-pdf"></i> <span>Media Library</span>
+            </a>
+          </li>
+          <li class="admin-only" style="display: none;">
+            <a href="#" class="nav-link" data-screen="services" id="nav-services">
+              <i class="fa-solid fa-sliders"></i> <span>Service Manager</span>
+            </a>
+          </li>
+          <li class="admin-only" style="display: none;">
+            <a href="#" class="nav-link" data-screen="users" id="nav-users">
+              <i class="fa-solid fa-users-gear"></i> <span>User Management</span>
+            </a>
+          </li>
+          <li>
+            <a href="#" class="nav-link" data-screen="logs" id="nav-logs">
+              <i class="fa-solid fa-clock-rotate-left"></i> <span>Audit Trail</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button id="btn-logout" class="btn btn-logout">
+          <i class="fa-solid fa-right-from-bracket"></i> <span>Sign Out</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- 3. MAIN CONTENT WORKSPACE -->
+    <main class="content-workspace">
+
+      <!-- TOP UTILITY HEADER -->
+      <header class="workspace-header">
+        <div class="header-left">
+          <h1 id="screen-title">Dashboard Overview</h1>
+          <p id="screen-subtitle" class="text-muted">Welcome back, Analyst.</p>
+        </div>
+        <div class="header-right">
+          <div class="date-badge">
+            <i class="fa-regular fa-calendar-days"></i>
+            <span id="header-date">June 5, 2026</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- VIEW PANELS -->
+      <div class="view-panel-container">
+
+        <!-- =================== DASHBOARD SCREEN =================== -->
+        <section id="screen-dashboard" class="screen-view active">
+          <!-- STATS CARDS GRID -->
+          <div class="stats-grid">
+            <div class="stat-card glass-panel">
+              <div class="stat-icon icon-cyan"><i class="fa-solid fa-file-invoice"></i></div>
+              <div class="stat-info">
+                <h3>Total Documents</h3>
+                <h2 id="stat-total-docs">0</h2>
+                <p>PDF reports and publications</p>
+              </div>
+            </div>
+            <div class="stat-card glass-panel">
+              <div class="stat-icon icon-teal"><i class="fa-solid fa-shield-halved"></i></div>
+              <div class="stat-info">
+                <h3>Active SOPs</h3>
+                <h2 id="stat-total-sops">0</h2>
+                <p>Standard operating policies</p>
+              </div>
+            </div>
+            <div class="stat-card glass-panel">
+              <div class="stat-icon icon-blue"><i class="fa-solid fa-compass"></i></div>
+              <div class="stat-info">
+                <h3>Dynamic Services</h3>
+                <h2 id="stat-total-services">0</h2>
+                <p>Dynamic operational modules</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- MIDDLE GRAPHICS & QUICK CHECKS -->
+          <div class="dashboard-details">
+            <!-- Dynamic Services Distribution -->
+            <div class="details-card glass-panel service-distribution-panel">
+              <h3>Service Distribution</h3>
+              <p class="card-subtitle text-muted">Dynamically aggregated asset metrics by Ocean Service</p>
+              <div class="dist-chart-container" id="distribution-chart-container">
+                <!-- Fallback list if Chart.js is not loaded, but we'll render custom canvas or CSS charts -->
+                <div class="custom-progress-bars" id="custom-distribution-bars">
+                  <p class="text-center text-muted">No operational services mapped yet.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Recent Uploads activity list -->
+            <div class="details-card glass-panel recent-uploads-panel">
+              <h3>Recent Asset Releases</h3>
+              <p class="card-subtitle text-muted">Latest document and policy uploads in the portal</p>
+              <div class="table-wrapper">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Title</th>
+                      <th>Type</th>
+                      <th>Category</th>
+                      <th>Date</th>
+                    </tr>
+                  </thead>
+                  <tbody id="recent-uploads-list">
+                    <tr>
+                      <td colspan="4" class="text-center text-muted">Fetching recent assets...</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =================== SOP LIFECYCLE SCREEN =================== -->
+        <section id="screen-sops" class="screen-view">
+          <div class="action-bar-layout">
+            <!-- Search & Filters -->
+            <div class="filter-controls glass-panel">
+              <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="sop-search-input" placeholder="Search SOPs by title...">
+              </div>
+              <div class="dropdown-filters">
+                <select id="sop-filter-service" class="form-control">
+                  <option value="">All Ocean Services</option>
+                </select>
+                <select id="sop-filter-category" class="form-control">
+                  <option value="">All Categories</option>
+                </select>
+                <input type="date" id="sop-filter-date" class="form-control" title="Filter by creation date"
+                  style="min-width:150px;">
+              </div>
+            </div>
+            <!-- Add SOP trigger -->
+            <button id="btn-add-sop-modal" class="btn btn-primary">
+              <i class="fa-solid fa-plus"></i> Create Master SOP
+            </button>
+          </div>
+
+          <!-- SOP Master List Table -->
+          <div class="table-card glass-panel">
+            <div class="table-wrapper">
+              <table class="data-table" id="sop-table">
+                <thead>
+                  <tr>
+                    <th>SOP Reference Title</th>
+                    <th>Ocean Service</th>
+                    <th>Subcategory</th>
+                    <th>Created On</th>
+                    <th>Latest Version</th>
+                    <th>Status</th>
+                    <th class="text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="sop-list">
+                  <tr>
+                    <td colspan="7" class="text-center text-muted">No SOP records found. Try modifying filters.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- =================== MEDIA LIBRARY SCREEN =================== -->
+        <section id="screen-documents" class="screen-view">
+          <div class="action-bar-layout">
+            <!-- Search & Filters -->
+            <div class="filter-controls glass-panel">
+              <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="doc-search-input" placeholder="Search reports by title, tags...">
+              </div>
+              <div class="dropdown-filters">
+                <select id="doc-filter-service" class="form-control">
+                  <option value="">All Services</option>
+                </select>
+                <select id="doc-filter-category" class="form-control">
+                  <option value="">All Categories</option>
+                </select>
+                <select id="doc-filter-type" class="form-control">
+                  <option value="">All Formats</option>
+                  <option value="PDF">PDF Documents</option>
+                  <option value="VIDEO">Videos</option>
+                </select>
+                <input type="date" id="doc-filter-date" class="form-control" title="Filter by upload date"
+                  style="min-width:150px;">
+              </div>
+            </div>
+            <!-- Add Document trigger (Admin only) -->
+            <button id="btn-add-doc-modal" class="btn btn-primary admin-only">
+              <i class="fa-solid fa-cloud-arrow-up"></i> Upload Media Asset
+            </button>
+          </div>
+
+          <!-- Documents Grid View -->
+          <div class="documents-grid" id="documents-grid-container">
+            <!-- Dynamic document cards go here -->
+          </div>
+          <div id="no-docs-message" class="empty-state-notice" style="display: none;">
+            <i class="fa-solid fa-folder-open"></i>
+            <p>No documents or videos found matching your filters.</p>
+          </div>
+        </section>
+
+        <!-- =================== SERVICE MANAGER SCREEN =================== -->
+        <section id="screen-services" class="screen-view">
+          <div class="action-bar-layout justify-end">
+            <button id="btn-add-service-modal" class="btn btn-primary">
+              <i class="fa-solid fa-plus"></i> Add Ocean Service
+            </button>
+          </div>
+
+          <div class="services-admin-grid" id="services-admin-container">
+            <!-- Dynamic services admin cards -->
+          </div>
+        </section>
+
+        <!-- =================== AUDIT TRAIL SCREEN =================== -->
+        <section id="screen-logs" class="screen-view">
+          <div class="table-card glass-panel">
+            <div class="table-header-title">
+              <h3>System Activity Logs</h3>
+              <p class="text-muted">Real-time audit trailing of system changes, uploads, downloads, and edits</p>
+            </div>
+            <div class="table-wrapper">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Timestamp</th>
+                    <th>User</th>
+                    <th>Action Details</th>
+                    <th>Reference ID</th>
+                  </tr>
+                </thead>
+                <tbody id="logs-list">
+                  <tr>
+                    <td colspan="4" class="text-center text-muted">No logs recorded.</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </main>
+  </div>
+
+  <!-- ======================== MODALS ======================== -->
+
+  <!-- 1. CREATE MASTER SOP MODAL -->
+  <div id="modal-create-sop" class="modal-overlay">
+    <div class="modal-card glass-panel">
+      <div class="modal-header">
+        <h3>Create New Master SOP</h3>
+        <button class="modal-close-btn" id="btn-close-create-sop"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="create-sop-form" class="modal-form">
+        <div class="form-group">
+          <label for="sop-title">SOP Title / Short Reference</label>
+          <input type="text" id="sop-title" required class="form-control"
+            placeholder="e.g. Standard Procedure for Tsunami Buoy Calibration">
+        </div>
+        <div class="form-group">
+          <label for="sop-service">Ocean Service Association</label>
+          <select id="sop-service" required class="form-control">
+            <option value="">Select Service...</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="sop-category">Repository Category</label>
+          <select id="sop-category" required class="form-control">
+            <option value="">Select Category...</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Initialize Master Record</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 2. SOP VERSION MANAGER MODAL -->
+  <div id="modal-version-manager" class="modal-overlay">
+    <div class="modal-card modal-card-large glass-panel">
+      <div class="modal-header">
+        <div>
+          <h3 id="version-modal-title">SOP Version Management</h3>
+          <p id="version-modal-subtitle" class="text-muted">History and lifecycle of this standard procedure</p>
+        </div>
+        <button class="modal-close-btn" id="btn-close-version-manager"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="version-manager-body">
+
+        <!-- Upload version side (Admins only) -->
+        <div class="version-upload-section admin-only" id="version-upload-panel">
+          <h4>Release New Version</h4>
+          <form id="upload-version-form" class="modal-form" enctype="multipart/form-data">
+            <input type="hidden" id="version-sop-id">
+            <div class="form-group">
+              <label for="version-number">Version Number</label>
+              <input type="text" id="version-number" required class="form-control" placeholder="e.g. 1.0, 2.0, 2.1">
+            </div>
+            <div class="form-group">
+              <label for="version-status">Release Status</label>
+              <select id="version-status" required class="form-control">
+                <option value="Draft">Draft (Under Review)</option>
+                <option value="Approved">Approved (Published)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="version-file">Document PDF File</label>
+              <div class="file-drop-area">
+                <i class="fa-solid fa-file-import"></i>
+                <span class="file-message">Choose a PDF document file</span>
+                <input type="file" id="version-file" required accept="application/pdf" class="file-input">
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Release Version</button>
+          </form>
+        </div>
+
+        <!-- Version History List -->
+        <div class="version-history-list">
+          <h4>Historical Versions & Archive</h4>
+          <div class="table-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Ver</th>
+                  <th>Released</th>
+                  <th>Status</th>
+                  <th>File</th>
+                  <th class="admin-only text-right">Approval Actions</th>
+                </tr>
+              </thead>
+              <tbody id="version-history-rows">
+                <!-- Dynamic version rows -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. ADD GENERAL MEDIA MODAL -->
+  <div id="modal-add-doc" class="modal-overlay">
+    <div class="modal-card glass-panel">
+      <div class="modal-header">
+        <h3>Upload Media Asset</h3>
+        <button class="modal-close-btn" id="btn-close-add-doc"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="add-doc-form" class="modal-form" enctype="multipart/form-data">
+        <div class="form-group">
+          <label>Format</label>
+          <div class="radio-toggle-group">
+            <input type="radio" id="type-pdf" name="doc_type" value="PDF" checked>
+            <label for="type-pdf"><i class="fa-solid fa-file-pdf"></i> PDF Document</label>
+
+            <input type="radio" id="type-video" name="doc_type" value="VIDEO">
+            <label for="type-video"><i class="fa-solid fa-video"></i> Video Resource</label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="doc-title">Asset Title</label>
+          <input type="text" id="doc-title" required class="form-control"
+            placeholder="e.g. Wave Forecasting Model User Manual">
+        </div>
+        <div class="form-group">
+          <label for="doc-description">Description / Abstract</label>
+          <textarea id="doc-description" rows="2" class="form-control"
+            placeholder="Provide a brief summary of the file..."></textarea>
+        </div>
+        <div class="form-group">
+          <label for="doc-service">Ocean Service</label>
+          <select id="doc-service" required class="form-control">
+            <option value="">Select Service...</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="doc-category">Subcategory</label>
+          <select id="doc-category" required class="form-control">
+            <option value="">Select Category...</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="doc-tags">Keywords / Tags (comma separated)</label>
+          <input type="text" id="doc-tags" class="form-control" placeholder="e.g. wave, forecast, ocean, manual">
+        </div>
+
+        <!-- Toggle-able input fields -->
+        <div id="input-pdf-field" class="form-group">
+          <label for="doc-pdf-file">PDF Document File</label>
+          <div class="file-drop-area">
+            <i class="fa-solid fa-file-circle-plus"></i>
+            <span class="doc-file-message">Choose a PDF document file</span>
+            <input type="file" id="doc-pdf-file" accept="application/pdf" class="file-input">
+          </div>
+        </div>
+
+        <div id="input-video-field" class="form-group" style="display: none;">
+          <label for="doc-video-url">Video Stream Link (YouTube / mp4 URL)</label>
+          <div class="input-with-icon">
+            <i class="fa-solid fa-link"></i>
+            <input type="url" id="doc-video-url" class="form-control" placeholder="https://www.youtube.com/watch?v=...">
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-block">Publish Asset</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 4. ADD/EDIT OCEAN SERVICE MODAL -->
+  <div id="modal-service" class="modal-overlay">
+    <div class="modal-card glass-panel">
+      <div class="modal-header">
+        <h3 id="service-modal-title">Add Ocean Service</h3>
+        <button class="modal-close-btn" id="btn-close-service"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <form id="service-form" class="modal-form">
+        <input type="hidden" id="service-id-field">
+        <div class="form-group">
+          <label for="service-name-field">Service Name</label>
+          <input type="text" id="service-name-field" required class="form-control"
+            placeholder="e.g. Wave Forecast, Storm Surge">
+        </div>
+        <div class="form-group">
+          <label for="service-desc-field">Service Description</label>
+          <textarea id="service-desc-field" rows="3" class="form-control"
+            placeholder="Details of this operational ocean service..."></textarea>
+        </div>
+        <div class="form-group">
+          <label for="service-status-field">Status</label>
+          <select id="service-status-field" required class="form-control">
+            <option value="Active">Active</option>
+            <option value="Inactive">Inactive</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Save Service Details</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 5. PDF PREVIEW MODAL -->
+  <div id="modal-pdf-viewer" class="modal-overlay">
+    <div class="modal-card modal-card-fullscreen glass-panel">
+      <div class="modal-header">
+        <div>
+          <h3 id="pdf-viewer-title">PDF Document Preview</h3>
+          <p id="pdf-viewer-subtitle" class="text-muted">System secure viewer</p>
+        </div>
+        <button class="modal-close-btn" id="btn-close-pdf-viewer"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="pdf-viewer-frame-container">
+        <!-- iframe will render PDF path natively -->
+        <iframe id="pdf-viewer-frame" src="" frameborder="0"></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- 6. VIDEO EMBED PLAYER MODAL -->
+  <div id="modal-video-viewer" class="modal-overlay">
+    <div class="modal-card modal-card-video glass-panel">
+      <div class="modal-header">
+        <div>
+          <h3 id="video-viewer-title">Video Resource Player</h3>
+          <p id="video-viewer-subtitle" class="text-muted">Streaming guide</p>
+        </div>
+        <button class="modal-close-btn" id="btn-close-video-viewer"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="video-viewer-content" id="video-viewer-player-container">
+        <!-- Dynamic video tag or iframe here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Script entry point -->
+  <script src="app.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,50 @@
+[
+  {
+    "id": 1,
+    "service_name": "Wave Forecast",
+    "description": "Real-time and forecasted wave heights and periods.",
+    "status": "Active"
+  },
+  {
+    "id": 2,
+    "service_name": "Ocean State Forecast",
+    "description": "General ocean parameters including currents and temperatures.",
+    "status": "Active"
+  },
+  {
+    "id": 3,
+    "service_name": "Tsunami Advisory",
+    "description": "Early warning and advisories for seismic sea waves.",
+    "status": "Active"
+  },
+  {
+    "id": 4,
+    "service_name": "Storm Surge",
+    "description": "Advisories on coastal water rises due to atmospheric disturbances.",
+    "status": "Active"
+  },
+  {
+    "id": 5,
+    "service_name": "Oil Spill Advisory",
+    "description": "Trajectory and impact assessment of marine oil pollution.",
+    "status": "Active"
+  },
+  {
+    "id": 6,
+    "service_name": "Search & Rescue",
+    "description": "Drift forecasts to assist maritime search and rescue operations.",
+    "status": "Active"
+  },
+  {
+    "id": 7,
+    "service_name": "Coral Bleaching Alerts",
+    "description": "Monitoring and alerts for sea surface temperature bleaching risks.",
+    "status": "Active"
+  },
+  {
+    "id": 8,
+    "service_name": "Fisheries Advisory",
+    "description": "Potential Fishing Zones (PFZ) advisory for fishermen.",
+    "status": "Active"
+  }
+]
