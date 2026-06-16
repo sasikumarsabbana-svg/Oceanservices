@@ -15,11 +15,35 @@
     "id": 2,
     "title": "Coral Bleaching Alert Sea Temperature Video Guide",
     "description": "Video instructions showing how to navigate SST dashboards and interpret bleaching warning levels.",
-    "file_path": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "file_path": "https://www.youtube.com/watch?v=ysz5S6PUM-U",
     "type": "VIDEO",
     "service_id": 7,
     "category_id": 3,
     "tags": "coral, bleaching, sea temperature, sst, tutorial",
+    "uploaded_by": 1,
+    "created_at": "2026-06-10T04:50:08.824Z"
+  },
+  {
+    "id": 3,
+    "title": "Storm Surge Response Procedure",
+    "description": "A short reference guide on storm surge advisory operations and emergency coastal response steps.",
+    "file_path": "/uploads/documents/storm_surge_response_v1.pdf",
+    "type": "PDF",
+    "service_id": 4,
+    "category_id": 2,
+    "tags": "storm surge, emergency, advisory, coastal response",
+    "uploaded_by": 1,
+    "created_at": "2026-06-10T04:50:08.824Z"
+  },
+  {
+    "id": 4,
+    "title": "Oil Spill Detection & Response Video Guide",
+    "description": "Sample video walkthrough for monitoring oil spill advisories and coordinating response operations.",
+    "file_path": "https://www.youtube.com/watch?v=ScMzIvxBSi4",
+    "type": "VIDEO",
+    "service_id": 5,
+    "category_id": 3,
+    "tags": "oil spill, detection, response, video guide",
     "uploaded_by": 1,
     "created_at": "2026-06-10T04:50:08.824Z"
   }

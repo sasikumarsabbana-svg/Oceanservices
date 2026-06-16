@@ -83,8 +83,8 @@ router.get('/', requireAuth, async (req, res) => {
   }
 });
 
-// POST /api/documents - Create new document/video (Admin only)
-router.post('/', requireAdmin, (req, res) => {
+// POST /api/documents - Create new document/video
+router.post('/', requireAuth, (req, res) => {
   // Use multer's upload middleware
   upload.single('pdf_file')(req, res, async (err) => {
     if (err) {

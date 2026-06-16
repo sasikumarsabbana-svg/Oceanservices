@@ -29,8 +29,8 @@ function seedDatabase() {
   // 1. Users
   const usersFile = path.join(DB_DIR, 'users.json');
   if (!fs.existsSync(usersFile)) {
-    const adminHash = bcrypt.hashSync('admin123', 8);
-    const userHash = bcrypt.hashSync('user123', 8);
+    const adminHash = bcrypt.hashSync('admin1234', 8);
+    const userHash = bcrypt.hashSync('sasi1234', 8);
     const users = [
       { id: 1, name: 'Admin Officer', email: 'admin@ocean.gov', password: adminHash, role: 'Admin', created_at: new Date().toISOString() },
       { id: 2, name: 'Service Analyst', email: 'user@ocean.gov', password: userHash, role: 'User', created_at: new Date().toISOString() }

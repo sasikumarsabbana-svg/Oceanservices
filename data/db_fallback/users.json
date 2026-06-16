@@ -3,7 +3,7 @@
     "id": 1,
     "name": "Admin Officer",
     "email": "admin@ocean.gov",
-    "password": "$2a$08$LnkB06ej9eNWcss98CQyhugL0pGT/BtIKW..MkrpCuqtkEpu1GllC",
+    "password": "$2a$08$VQ8G3VK/TcEdyBiqu83.M.rZn9XybaLu41LLjGSB2ca7j5lfAHgJO",
     "role": "Admin",
     "created_at": "2026-06-10T04:50:08.820Z"
   },
@@ -11,7 +11,7 @@
     "id": 2,
     "name": "Service Analyst",
     "email": "user@ocean.gov",
-    "password": "$2a$08$HiZ.8dv7FIihJ2D26sCjHukz.KONRdIhVO6kITtqR5lq9aKsB7FMS",
+    "password": "$2a$08$ZOKy1UhGcaL4yJmUR/RH.Oq35t2v/DSSZpA8E8HhTYs5e/dkaYIc6",
     "role": "User",
     "created_at": "2026-06-10T04:50:08.821Z"
   }
