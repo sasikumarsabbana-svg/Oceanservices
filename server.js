@@ -5,6 +5,7 @@ const db = require('./src/db/db');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const HOST = process.env.HOST || '0.0.0.0';
 
 // Standard Middlewares
 app.use(express.json());
@@ -77,9 +78,10 @@ app.get('*', (req, res) => {
 });
 
 // Start the server
-app.listen(PORT, () => {
+app.listen(PORT, HOST, () => {
   console.log(`=======================================================`);
   console.log(`  Operational Ocean Services Knowledge Repository API  `);
-  console.log(`  Server running locally at: http://localhost:${PORT}  `);
+  console.log(`  Local: http://localhost:${PORT}  `);
+  console.log(`  Network: http://0.0.0.0:${PORT}  `);
   console.log(`=======================================================`);
 });

@@ -95,6 +95,17 @@ body {
   opacity: 0.7;
 }
 
+/* animated subtle bubble movement */
+.ocean-bubbles::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(0,242,254,0.02) 2px, transparent 60px);
+  background-size: 160px 160px;
+  opacity: 0.6;
+  animation: bubbleFloat 18s linear infinite;
+}
+
 /* Typography */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
@@ -146,6 +157,12 @@ h1, h2, h3, h4, h5, h6 {
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+.glass-panel:hover {
+  transform: translateY(-6px) scale(1.005);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.55), 0 6px 30px rgba(var(--primary-rgb),0.08);
+  border-color: var(--glass-border-focus);
+}
+
 /* ==========================================================================
    BUTTONS & FORM INPUTS
    ========================================================================== */
@@ -174,6 +191,11 @@ h1, h2, h3, h4, h5, h6 {
 .btn-primary:hover {
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(0, 242, 254, 0.45);
+}
+
+/* Glowing pulse for primary actionable buttons */
+.btn-primary:active, .btn-primary:focus {
+  box-shadow: 0 10px 30px rgba(var(--primary-rgb), 0.28), 0 6px 20px rgba(0,0,0,0.35);
 }
 
 .btn-secondary {
@@ -369,6 +391,10 @@ select.form-control {
   animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+/* subtle parallax logo float */
+.logo-icon { transform: translateZ(0); transition: transform 0.6s cubic-bezier(.16,1,.3,1); }
+.login-card:hover .logo-icon { transform: translateY(-6px) scale(1.03); }
+
 .login-header {
   text-align: center;
   margin-bottom: 30px;
@@ -440,6 +466,10 @@ select.form-control {
   z-index: 10;
   backdrop-filter: blur(20px);
 }
+
+/* animated sidebar entrance */
+.sidebar { transform: translateX(-6px); transition: transform 0.45s cubic-bezier(.2,.9,.2,1), opacity 0.4s; }
+.app-layout.active-app .sidebar { transform: translateX(0); }
 
 .sidebar-brand {
   display: flex;
@@ -672,6 +702,11 @@ select.form-control {
   padding: 24px;
 }
 
+/* animated stat card micro interactions */
+.stat-card { transform-origin: center; transition: transform 0.25s cubic-bezier(.2,.9,.2,1), box-shadow 0.25s; }
+.stat-card:hover { transform: translateY(-6px) scale(1.02); box-shadow: 0 18px 40px rgba(0,0,0,0.5); }
+.stat-number { display:inline-block; transform: translateY(0); transition: transform 0.5s; }
+
 .stat-icon {
   width: 54px;
   height: 54px;
@@ -787,6 +822,24 @@ select.form-control {
   width: 0%; /* Dynamic */
   transition: width 1s ease-in-out;
 }
+
+/* small shimmer on fill */
+.progress-fill::before {
+  content: "";
+  position: absolute;
+  left: -40%;
+  top: 0;
+  bottom: 0;
+  width: 40%;
+  background: linear-gradient(90deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02), rgba(255,255,255,0.06));
+  transform: skewX(-20deg);
+  animation: fillShimmer 2.2s linear infinite;
+  pointer-events: none;
+}
+
+/* card tilt on pointer move (hardware accelerated) */
+.doc-card { perspective: 900px; transform-style: preserve-3d; transition: transform 0.25s ease, box-shadow 0.25s ease; }
+.doc-card:hover { transform: translateY(-8px) rotateX(0.8deg); box-shadow: 0 30px 60px rgba(0,0,0,0.5); }
 
 /* ==========================================================================
    DATA TABLES (SOPs, LOGs)
@@ -1228,6 +1281,17 @@ select.form-control {
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
+}
+
+@keyframes bubbleFloat {
+  from { transform: translateY(0) translateX(0); }
+  50% { transform: translateY(-20px) translateX(18px); }
+  to { transform: translateY(0) translateX(0); }
+}
+
+@keyframes fillShimmer {
+  0% { left: -40%; }
+  100% { left: 120%; }
 }
 
 @keyframes slideUp {

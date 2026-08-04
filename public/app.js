@@ -357,10 +357,10 @@ async function loadDashboard() {
     const res = await fetchWithAuth('/dashboard');
     const data = await res.json();
 
-    // Set counts
-    document.getElementById('stat-total-docs').innerText = data.totalDocsCount;
-    document.getElementById('stat-total-sops').innerText = data.sopCount;
-    document.getElementById('stat-total-services').innerText = data.distribution.length;
+    // Animated counts
+    animateCount(document.getElementById('stat-total-docs'), data.totalDocsCount);
+    animateCount(document.getElementById('stat-total-sops'), data.sopCount);
+    animateCount(document.getElementById('stat-total-services'), data.distribution.length);
 
     // Render Progress Bars for distribution
     const progressContainer = document.getElementById('custom-distribution-bars');
@@ -374,21 +374,36 @@ async function loadDashboard() {
       
       const maxCount = Math.max(...data.distribution.map(d => d.count)) || 1;
 
-      data.distribution.forEach(dist => {
-        const percentage = (dist.count / maxCount) * 100;
-        
+      data.distribution.forEach((dist, idx) => {
+        const percentage = Math.round((dist.count / maxCount) * 100);
+
         const group = document.createElement('div');
         group.className = 'progress-bar-group';
-        group.innerHTML = `
-          <div class="progress-labels">
-            <span class="service-name">${dist.name}</span>
-            <span class="asset-count">${dist.count} asset(s)</span>
-          </div>
-          <div class="progress-track">
-            <div class="progress-fill" style="width: ${percentage}%"></div>
-          </div>
+
+        const labels = document.createElement('div');
+        labels.className = 'progress-labels';
+        labels.innerHTML = `
+          <span class="service-name">${dist.name}</span>
+          <span class="asset-count">${dist.count} asset(s)</span>
         `;
+
+        const track = document.createElement('div');
+        track.className = 'progress-track';
+        track.style.position = 'relative';
+
+        const fill = document.createElement('div');
+        fill.className = 'progress-fill';
+        fill.style.width = '0%';
+
+        track.appendChild(fill);
+        group.appendChild(labels);
+        group.appendChild(track);
         progressContainer.appendChild(group);
+
+        // Staggered animation for fills
+        setTimeout(() => {
+          fill.style.width = percentage + '%';
+        }, 150 * idx);
       });
     }
 
@@ -1027,6 +1042,24 @@ document.getElementById('btn-close-video-viewer').addEventListener('click', () =
 // ==========================================================================
 // GLOBAL UI UTILITY METHODS
 // ==========================================================================
+// Animate numeric count up for stat elements
+function animateCount(el, target, duration = 900) {
+  if (!el) return;
+  const start = 0;
+  const end = Number(target) || 0;
+  const range = end - start;
+  const startTime = performance.now();
+
+  function step(now) {
+    const progress = Math.min((now - startTime) / duration, 1);
+    const value = Math.floor(start + range * progress);
+    el.innerText = value;
+    if (progress < 1) requestAnimationFrame(step);
+    else el.innerText = end;
+  }
+  requestAnimationFrame(step);
+}
+
 function openModal(modalId) {
   document.getElementById(modalId).classList.add('active-modal');
 }
