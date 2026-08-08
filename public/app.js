@@ -40,7 +40,7 @@ async function checkAuthentication() {
     }
   } catch (err) {
     console.error('Session validation error:', err);
-    showToast('Failed to connect to authentication server. Operating in offline/cached view.', 'error');
+    showToast('Failed to connect to authentication server. Operating in offline/cached view.', 'error', { reload: true });
     // Clear token as fallback
     logout();
   }
@@ -552,7 +552,7 @@ async function handleCreateSop(e) {
     }
   } catch (err) {
     console.error(err);
-    showToast('Connection error during SOP creation.', 'error');
+    showToast('Connection error during SOP creation.', 'error', { reload: true });
   }
 }
 
@@ -670,7 +670,7 @@ async function handleUploadVersion(e) {
     }
   } catch (err) {
     console.error(err);
-    showToast('Network error while uploading version.', 'error');
+    showToast('Network error while uploading version.', 'error', { reload: true });
   }
 }
 
@@ -693,7 +693,7 @@ async function changeVersionStatus(versionId, newStatus, sopId) {
     }
   } catch (err) {
     console.error(err);
-    showToast('Failed to connect to server.', 'error');
+    showToast('Failed to connect to server.', 'error', { reload: true });
   }
 }
 
@@ -844,7 +844,7 @@ async function handleAddDoc(e) {
     }
   } catch (err) {
     console.error(err);
-    showToast('Failed to connect to server during upload.', 'error');
+    showToast('Failed to connect to server during upload.', 'error', { reload: true });
   }
 }
 
@@ -947,7 +947,7 @@ async function handleDeleteService(id, name) {
     }
   } catch (err) {
     console.error(err);
-    showToast('Connection error during deletion.', 'error');
+    showToast('Connection error during deletion.', 'error', { reload: true });
   }
 }
 
@@ -1090,17 +1090,23 @@ function escapeQuote(str) {
 }
 
 // Toast Alert System
-function showToast(message, type = 'info') {
+function showToast(message, type = 'info', options = {}) {
   const container = document.getElementById('toast-container');
   const toast = document.createElement('div');
   toast.className = `toast toast-${type}`;
   
-  let iconClass = 'fa-info-circle';
-  if (type === 'success') iconClass = 'fa-check-circle';
-  if (type === 'error') iconClass = 'fa-times-circle';
+  let iconMarkup = `<i class="fa-solid fa-info-circle"></i>`;
+  if (type === 'success') {
+    iconMarkup = `<i class="fa-solid fa-check-circle"></i>`;
+  }
+
+  if (type === 'error') {
+    const loaderClass = options.reload ? 'toast-ocean-reload' : 'toast-ocean-loader';
+    iconMarkup = `<span class="${loaderClass}"><span></span><span></span><span></span></span>`;
+  }
 
   toast.innerHTML = `
-    <i class="fa-solid ${iconClass}"></i>
+    ${iconMarkup}
     <span>${message}</span>
   `;
 

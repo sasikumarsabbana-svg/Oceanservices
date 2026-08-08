@@ -29,8 +29,8 @@ function seedDatabase() {
   // 1. Users
   const usersFile = path.join(DB_DIR, 'users.json');
   if (!fs.existsSync(usersFile)) {
-    const adminHash = bcrypt.hashSync('admin1234', 8);
-    const userHash = bcrypt.hashSync('sasi1234', 8);
+    const adminHash = bcrypt.hashSync('admin@123', 8);
+    const userHash = bcrypt.hashSync('sasi@123', 8);
     const users = [
       { id: 1, name: 'Admin Officer', email: 'admin@ocean.gov', password: adminHash, role: 'Admin', created_at: new Date().toISOString() },
       { id: 2, name: 'Service Analyst', email: 'user@ocean.gov', password: userHash, role: 'User', created_at: new Date().toISOString() }
@@ -146,6 +146,35 @@ async function query(sql, params = []) {
     const tableName = match[1];
     let data = readTable(tableName);
 
+    const selectMatch = /select\s+(.+?)\s+from\s+/i.exec(clean);
+    const selectedFields = selectMatch
+      ? selectMatch[1].split(',').map(field => field.trim()).filter(Boolean)
+      : [];
+
+    const requestedJoinFields = (joinAlias) => {
+      const requested = new Map();
+      let allowAll = false;
+
+      selectedFields.forEach(field => {
+        const asMatch = /\s+as\s+(.+)$/i.exec(field);
+        const normalizedField = asMatch ? field.slice(0, asMatch.index).trim() : field;
+        const aliasName = asMatch ? asMatch[1].trim() : null;
+
+        if (normalizedField === `${joinAlias}.*` || normalizedField === '*') {
+          allowAll = true;
+          return;
+        }
+
+        const prefix = `${joinAlias}.`;
+        if (normalizedField.toLowerCase().startsWith(prefix.toLowerCase())) {
+          const colName = normalizedField.slice(prefix.length);
+          requested.set(colName, aliasName || colName);
+        }
+      });
+
+      return { requested, allowAll };
+    };
+
     // Filter by WHERE
     // Handles WHERE col = ? (simple), WHERE col = ? AND/OR col = ? etc.
     const whereMatch = /where\s+(.+?)(?:\s+order\s+by|\s+limit|$)/i.exec(clean);
@@ -187,14 +216,13 @@ async function query(sql, params = []) {
       const onRight = joinMatch[4];
 
       const joinData = readTable(joinTable);
-      
+      const { requested: joinFields, allowAll } = requestedJoinFields(joinAlias);
+
       // Determine columns to map
       const leftCol = onLeft.split('.')[1] || onLeft;
       const rightCol = onRight.split('.')[1] || onRight;
 
       data = data.map(row => {
-        // Find matching row in joined table
-        // We know standard joins are: d.service_id = s.id, so if primary table has service_id and joined has id
         let keyVal = row[leftCol];
         let joinRow = joinData.find(jr => jr[rightCol] == keyVal);
         if (!joinRow && row[rightCol] !== undefined) {
@@ -204,19 +232,17 @@ async function query(sql, params = []) {
 
         const merged = { ...row };
         if (joinRow) {
-          // Copy joined fields
-          // E.g. service_name -> service_name, category_name -> category_name, name -> user_name
-          Object.keys(joinRow).forEach(k => {
-            if (k !== 'id') {
-              if (joinTable === 'users' && k === 'name') {
-                merged['uploaded_by_name'] = joinRow[k];
-                merged['created_by_name'] = joinRow[k];
-                merged['user_name'] = joinRow[k];
-              } else {
-                merged[k] = joinRow[k];
+          if (allowAll) {
+            Object.keys(joinRow).forEach(k => {
+              if (k !== 'id') merged[k] = joinRow[k];
+            });
+          } else {
+            joinFields.forEach((aliasName, colName) => {
+              if (colName in joinRow) {
+                merged[aliasName] = joinRow[colName];
               }
-            }
-          });
+            });
+          }
         }
         return merged;
       });

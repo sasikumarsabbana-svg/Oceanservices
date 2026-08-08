@@ -6,14 +6,25 @@ const { requireAuth } = require('./auth');
 // GET /api/logs - Retrieve activity logs with joined user details (Requires Auth)
 router.get('/', requireAuth, async (req, res) => {
   try {
-    const [logs] = await db.query(`
-      SELECT l.*, u.name as user_name, u.email as user_email
-      FROM activity_logs l
-      LEFT JOIN users u ON l.user_id = u.id
-      ORDER BY l.timestamp DESC
-      LIMIT 100
-    `);
-    res.json(logs);
+    const [logs] = await db.query('SELECT * FROM activity_logs ORDER BY timestamp DESC LIMIT 100');
+    const [users] = await db.query('SELECT id, name, email FROM users');
+
+    const userMap = users.reduce((acc, user) => {
+      acc[user.id] = { name: user.name, email: user.email };
+      return acc;
+    }, {});
+
+    const sanitizedLogs = logs.map(log => ({
+      id: log.id,
+      user_id: log.user_id,
+      action: log.action,
+      reference_id: log.reference_id,
+      timestamp: log.timestamp,
+      user_name: userMap[log.user_id]?.name || null,
+      user_email: userMap[log.user_id]?.email || null
+    }));
+
+    res.json(sanitizedLogs);
   } catch (err) {
     console.error('Fetch logs error:', err);
     res.status(500).json({ error: 'Internal Server Error' });

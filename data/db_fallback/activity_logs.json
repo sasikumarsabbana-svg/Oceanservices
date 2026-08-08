@@ -243,5 +243,159 @@
     "action": "User Logged In",
     "reference_id": "1",
     "timestamp": "2026-07-04T10:20:05.905Z"
+  },
+  {
+    "id": 36,
+    "user_id": 1,
+    "action": "User Logged In",
+    "reference_id": "1",
+    "timestamp": "2026-08-08T05:22:54.809Z"
+  },
+  {
+    "id": 37,
+    "user_id": 1,
+    "action": "User Logged In",
+    "reference_id": "1",
+    "timestamp": "2026-08-08T05:23:51.156Z"
+  },
+  {
+    "id": 38,
+    "user_id": 1,
+    "action": "User Logged In",
+    "reference_id": "1",
+    "timestamp": "2026-08-08T05:24:02.506Z"
+  },
+  {
+    "id": 39,
+    "user_id": 1,
+    "action": "User Logged In",
+    "reference_id": "1",
+    "timestamp": "2026-08-08T05:24:39.446Z"
+  },
+  {
+    "id": 40,
+    "user_id": 1,
+    "action": "User Logged In",
+    "reference_id": "1",
+    "timestamp": "2026-08-08T05:26:01.455Z"
+  },
+  {
+    "id": 41,
+    "user_id": 1,
+    "action": "User Logged In",
+    "reference_id": "1",
+    "timestamp": "2026-08-08T05:27:18.273Z"
+  },
+  {
+    "id": 42,
+    "user_id": 1,
+    "action": "User Logged In",
+    "reference_id": "1",
+    "timestamp": "2026-08-08T05:33:12.788Z"
+  },
+  {
+    "id": 43,
+    "user_id": 1,
+    "action": "User Logged In",
+    "reference_id": "1",
+    "timestamp": "2026-08-08T05:34:30.915Z"
+  },
+  {
+    "id": 44,
+    "user_id": 2,
+    "action": "User Logged In",
+    "reference_id": "2",
+    "timestamp": "2026-08-08T05:34:30.947Z"
+  },
+  {
+    "id": 45,
+    "user_id": 1,
+    "action": "User Logged In",
+    "reference_id": "1",
+    "timestamp": "2026-08-08T05:36:24.389Z"
+  },
+  {
+    "id": 46,
+    "user_id": 1,
+    "action": "Downloaded Document: Wave Forecast Model Operational Guide",
+    "reference_id": "1",
+    "timestamp": "2026-08-08T05:36:24.457Z"
+  },
+  {
+    "id": 47,
+    "user_id": 2,
+    "action": "User Logged In",
+    "reference_id": "2",
+    "timestamp": "2026-08-08T05:36:24.493Z"
+  },
+  {
+    "id": 48,
+    "user_id": 2,
+    "action": "Downloaded Document: Wave Forecast Model Operational Guide",
+    "reference_id": "1",
+    "timestamp": "2026-08-08T05:36:24.521Z"
+  },
+  {
+    "id": 49,
+    "user_id": 2,
+    "action": "User Logged In",
+    "reference_id": "2",
+    "timestamp": "2026-08-08T05:46:28.131Z"
+  },
+  {
+    "id": 50,
+    "user_id": 2,
+    "action": "User Logged Out",
+    "reference_id": "2",
+    "timestamp": "2026-08-08T05:46:58.899Z"
+  },
+  {
+    "id": 51,
+    "user_id": 1,
+    "action": "User Logged In",
+    "reference_id": "1",
+    "timestamp": "2026-08-08T05:47:12.333Z"
+  },
+  {
+    "id": 52,
+    "user_id": 1,
+    "action": "User Logged Out",
+    "reference_id": "1",
+    "timestamp": "2026-08-08T05:58:31.088Z"
+  },
+  {
+    "id": 53,
+    "user_id": 1,
+    "action": "User Logged In",
+    "reference_id": "1",
+    "timestamp": "2026-08-08T05:58:45.178Z"
+  },
+  {
+    "id": 54,
+    "user_id": 1,
+    "action": "User Logged Out",
+    "reference_id": "1",
+    "timestamp": "2026-08-08T06:13:45.140Z"
+  },
+  {
+    "id": 55,
+    "user_id": 2,
+    "action": "User Logged In",
+    "reference_id": "2",
+    "timestamp": "2026-08-08T06:13:56.277Z"
+  },
+  {
+    "id": 56,
+    "user_id": 2,
+    "action": "User Logged Out",
+    "reference_id": "2",
+    "timestamp": "2026-08-08T06:25:07.281Z"
+  },
+  {
+    "id": 57,
+    "user_id": 1,
+    "action": "User Logged In",
+    "reference_id": "1",
+    "timestamp": "2026-08-08T06:25:24.511Z"
   }
 ]
