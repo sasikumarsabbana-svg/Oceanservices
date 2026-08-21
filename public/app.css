@@ -39,6 +39,21 @@
   --border-radius-sm: 6px;
 }
 
+/* Accent Themes */
+body.theme-emerald {
+  --primary: #00e676;
+  --primary-rgb: 0, 230, 118;
+  --primary-hover: #69f0ae;
+  --glass-border-focus: rgba(0, 230, 118, 0.4);
+}
+
+body.theme-cobalt {
+  --primary: #a855f7;
+  --primary-rgb: 168, 85, 247;
+  --primary-hover: #c084fc;
+  --glass-border-focus: rgba(168, 85, 247, 0.4);
+}
+
 /* Custom Scrollbars */
 ::-webkit-scrollbar {
   width: 8px;
@@ -732,6 +747,67 @@ select.form-control {
   margin-bottom: 4px;
 }
 
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.theme-switcher-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(2, 9, 22, 0.4);
+  border: 1px solid var(--glass-border);
+  padding: 6px 12px;
+  border-radius: 30px;
+}
+
+.theme-label {
+  font-size: 11px;
+  font-weight: 500;
+  margin-right: 4px;
+}
+
+.theme-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.theme-dot:hover {
+  transform: scale(1.25);
+}
+
+.theme-dot.active-theme {
+  border-color: #ffffff;
+  transform: scale(1.15);
+  box-shadow: 0 0 8px var(--primary);
+}
+
+.btn-quick-search {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  font-size: 12px;
+  border-radius: 20px;
+}
+
+.kbd-badge {
+  font-family: monospace;
+  font-size: 10px;
+  padding: 2px 6px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  color: var(--text-main);
+  letter-spacing: 0.05em;
+}
+
 .date-badge {
   display: flex;
   align-items: center;
@@ -746,6 +822,119 @@ select.form-control {
 
 .date-badge i {
   color: var(--primary);
+}
+
+/* Command Palette Overlay & Card */
+.command-palette-card {
+  width: 100%;
+  max-width: 650px;
+  background: rgba(4, 14, 30, 0.95);
+  border: 1px solid var(--primary);
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), 0 0 30px rgba(var(--primary-rgb), 0.2);
+  overflow: hidden;
+  animation: modalScale 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.command-palette-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--glass-border);
+  background: rgba(2, 9, 22, 0.5);
+}
+
+.command-palette-header i {
+  font-size: 18px;
+  color: var(--primary);
+}
+
+.command-palette-header input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text-main);
+  font-family: var(--font-body);
+  font-size: 16px;
+  outline: none;
+}
+
+.command-palette-results {
+  max-height: 380px;
+  overflow-y: auto;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.cmd-item-placeholder {
+  text-align: center;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.cmd-item-placeholder i {
+  font-size: 32px;
+}
+
+.cmd-result-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cmd-result-item:hover, .cmd-result-item.active {
+  background: rgba(var(--primary-rgb), 0.12);
+  border-color: var(--glass-border-focus);
+  transform: translateX(4px);
+}
+
+.cmd-item-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 242, 254, 0.1);
+  color: var(--primary);
+}
+
+.cmd-item-info {
+  flex: 1;
+}
+
+.cmd-item-info h5 {
+  font-size: 14px;
+  color: var(--text-main);
+  margin-bottom: 2px;
+}
+
+.cmd-item-info p {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.cmd-item-type {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--primary);
+  border: 1px solid var(--glass-border);
 }
 
 /* ==========================================================================

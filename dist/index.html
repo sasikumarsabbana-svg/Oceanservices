@@ -146,6 +146,21 @@
           <p id="screen-subtitle" class="text-muted">Welcome back, Analyst.</p>
         </div>
         <div class="header-right">
+          <!-- Theme Accent Selector -->
+          <div class="theme-switcher-group">
+            <span class="theme-label text-muted"><i class="fa-solid fa-palette"></i> Accent:</span>
+            <button type="button" class="theme-dot active-theme" data-theme="cyan" title="Neon Cyan Theme" style="background: #00f2fe;"></button>
+            <button type="button" class="theme-dot" data-theme="emerald" title="Emerald Sea Theme" style="background: #00e676;"></button>
+            <button type="button" class="theme-dot" data-theme="cobalt" title="Deep Cobalt Theme" style="background: #a855f7;"></button>
+          </div>
+
+          <!-- Quick Command Palette Trigger -->
+          <button id="btn-quick-search-trigger" class="btn btn-secondary btn-quick-search" title="Quick Search (Ctrl + K)">
+            <i class="fa-solid fa-bolt"></i>
+            <span>Quick Search</span>
+            <span class="kbd-badge">Ctrl K</span>
+          </button>
+
           <div class="date-badge">
             <i class="fa-regular fa-calendar-days"></i>
             <span id="header-date">June 5, 2026</span>
@@ -652,8 +667,19 @@
         </div>
         <button class="modal-close-btn" id="btn-close-video-viewer"><i class="fa-solid fa-xmark"></i></button>
       </div>
-      <div class="video-viewer-content" id="video-viewer-player-container">
-        <!-- Dynamic video tag or iframe here -->
+  <!-- 7. UNIVERSAL COMMAND PALETTE MODAL (Ctrl + K) -->
+  <div id="modal-command-palette" class="modal-overlay">
+    <div class="command-palette-card glass-panel">
+      <div class="command-palette-header">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="cmd-palette-input" placeholder="Type to search SOPs, Media Assets, Services, or Users... (Esc to close)" autocomplete="off">
+        <span class="kbd-badge">ESC</span>
+      </div>
+      <div class="command-palette-results" id="cmd-palette-results">
+        <div class="cmd-item-placeholder">
+          <i class="fa-solid fa-compass text-muted"></i>
+          <p class="text-muted">Start typing to instantly query across all portal resources...</p>
+        </div>
       </div>
     </div>
   </div>

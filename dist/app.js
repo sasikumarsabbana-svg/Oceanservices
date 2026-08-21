@@ -14,9 +14,39 @@ let cachedCategories = [];
 // BOOTSTRAP & INITIALIZATION
 // ==========================================================================
 document.addEventListener('DOMContentLoaded', () => {
+  initThemeAccent();
   setupEventListeners();
   checkAuthentication();
 });
+
+// Accent Theme Switcher
+function initThemeAccent() {
+  const savedTheme = localStorage.getItem('ocean_accent_theme') || 'cyan';
+  setThemeAccent(savedTheme);
+
+  document.querySelectorAll('.theme-dot').forEach(dot => {
+    dot.addEventListener('click', () => {
+      const theme = dot.getAttribute('data-theme');
+      setThemeAccent(theme);
+    });
+  });
+}
+
+function setThemeAccent(themeName) {
+  document.body.classList.remove('theme-cyan', 'theme-emerald', 'theme-cobalt');
+  if (themeName !== 'cyan') {
+    document.body.classList.add(`theme-${themeName}`);
+  }
+  localStorage.setItem('ocean_accent_theme', themeName);
+
+  document.querySelectorAll('.theme-dot').forEach(dot => {
+    if (dot.getAttribute('data-theme') === themeName) {
+      dot.classList.add('active-theme');
+    } else {
+      dot.classList.remove('active-theme');
+    }
+  });
+}
 
 // Check if user is logged in
 async function checkAuthentication() {
@@ -217,6 +247,22 @@ function setupEventListeners() {
   document.getElementById('doc-pdf-file').addEventListener('change', (e) => {
     const name = e.target.files[0] ? e.target.files[0].name : 'Choose a PDF document file';
     document.querySelector('.doc-file-message').innerText = name;
+  });
+
+  // Quick Search Command Palette (Ctrl + K / Cmd + K)
+  document.getElementById('btn-quick-search-trigger').addEventListener('click', openCommandPalette);
+
+  document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+      e.preventDefault();
+      openCommandPalette();
+    } else if (e.key === 'Escape') {
+      closeModal('modal-command-palette');
+    }
+  });
+
+  document.getElementById('cmd-palette-input').addEventListener('input', (e) => {
+    handleCommandPaletteSearch(e.target.value);
   });
 
   // Set real date
@@ -1265,4 +1311,126 @@ function debounce(func, wait) {
     clearTimeout(timeout);
     timeout = setTimeout(later, wait);
   };
+}
+
+// Command Palette Search Engine
+async function openCommandPalette() {
+  openModal('modal-command-palette');
+  const input = document.getElementById('cmd-palette-input');
+  input.value = '';
+  input.focus();
+  handleCommandPaletteSearch('');
+}
+
+async function handleCommandPaletteSearch(query) {
+  const container = document.getElementById('cmd-palette-results');
+  const term = query.trim().toLowerCase();
+
+  if (!term) {
+    container.innerHTML = `
+      <div class="cmd-item-placeholder">
+        <i class="fa-solid fa-compass text-muted"></i>
+        <p class="text-muted">Type to search SOPs, Media Assets, Services, or Users...</p>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = `<div class="cmd-item-placeholder"><p class="text-muted">Searching resources...</p></div>`;
+
+  try {
+    const [sopRes, docRes, servRes] = await Promise.all([
+      fetchWithAuth('/sops'),
+      fetchWithAuth('/documents'),
+      fetchWithAuth('/services')
+    ]);
+
+    const sops = await sopRes.json();
+    const docs = await docRes.json();
+    const services = await servRes.json();
+
+    const results = [];
+
+    // Filter SOPs
+    sops.forEach(sop => {
+      if (sop.title.toLowerCase().includes(term) || (sop.service_name && sop.service_name.toLowerCase().includes(term))) {
+        results.push({
+          type: 'SOP',
+          title: sop.title,
+          subtitle: `Service: ${sop.service_name || 'General'} | Version: ${sop.latest_version || '1.0'}`,
+          icon: 'fa-book-bookmark',
+          action: () => {
+            closeModal('modal-command-palette');
+            navigateToScreen('sops');
+            document.getElementById('sop-search-input').value = sop.title;
+            loadSOPs();
+          }
+        });
+      }
+    });
+
+    // Filter Documents
+    docs.forEach(doc => {
+      if (doc.title.toLowerCase().includes(term) || (doc.tags && doc.tags.toLowerCase().includes(term))) {
+        results.push({
+          type: doc.type === 'VIDEO' ? 'VIDEO' : 'DOCUMENT',
+          title: doc.title,
+          subtitle: `Category: ${doc.category_name || 'General'} | Format: ${doc.type}`,
+          icon: doc.type === 'VIDEO' ? 'fa-video' : 'fa-file-pdf',
+          action: () => {
+            closeModal('modal-command-palette');
+            navigateToScreen('documents');
+            document.getElementById('doc-search-input').value = doc.title;
+            loadDocuments();
+          }
+        });
+      }
+    });
+
+    // Filter Services
+    services.forEach(serv => {
+      if (serv.service_name.toLowerCase().includes(term) || (serv.description && serv.description.toLowerCase().includes(term))) {
+        results.push({
+          type: 'SERVICE',
+          title: serv.service_name,
+          subtitle: serv.description || 'Operational Module',
+          icon: 'fa-sliders',
+          action: () => {
+            closeModal('modal-command-palette');
+            navigateToScreen('services');
+          }
+        });
+      }
+    });
+
+    if (results.length === 0) {
+      container.innerHTML = `
+        <div class="cmd-item-placeholder">
+          <i class="fa-solid fa-magnifying-glass text-muted"></i>
+          <p class="text-muted">No matching SOPs, documents, or services found for "${escapeHtml(query)}"</p>
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = '';
+    results.slice(0, 8).forEach(res => {
+      const itemEl = document.createElement('div');
+      itemEl.className = 'cmd-result-item';
+      itemEl.innerHTML = `
+        <div class="cmd-item-icon"><i class="fa-solid ${res.icon}"></i></div>
+        <div class="cmd-item-info">
+          <h5>${escapeHtml(res.title)}</h5>
+          <p>${escapeHtml(res.subtitle)}</p>
+        </div>
+        <span class="cmd-item-type">${res.type}</span>
+      `;
+      itemEl.addEventListener('click', res.action);
+      container.appendChild(itemEl);
+    });
+
+  } catch (err) {
+    console.error('Command palette search error:', err);
+    container.innerHTML = `<div class="cmd-item-placeholder"><p class="text-muted">Error searching resources.</p></div>`;
+  }
 }
