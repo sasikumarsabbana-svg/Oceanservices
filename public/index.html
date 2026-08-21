@@ -14,7 +14,7 @@
   <!-- FontAwesome for Premium Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <!-- Core Application Stylesheet -->
-  <link rel="stylesheet" href="app.css">
+  <link rel="stylesheet" href="app.css?v=3.0">
 </head>
 
 <body>
@@ -260,7 +260,98 @@
             </div>
           </div>
 
-          <!-- 3. MIDDLE GRAPHICS & QUICK CHECKS -->
+          <!-- 3. OPERATIONAL OCEAN MODULES TELEMETRY TILES GRID -->
+          <div class="ocean-modules-section">
+            <div class="section-title-bar">
+              <div>
+                <h3><i class="fa-solid fa-water text-cyan"></i> Active Operational Oceanography Service Modules</h3>
+                <p class="text-muted">Direct access to standard operating procedures and technical guides by marine domain</p>
+              </div>
+              <span class="badge badge-active"><i class="fa-solid fa-globe"></i> 6 Live Modules</span>
+            </div>
+
+            <div class="ocean-modules-grid">
+              <div class="ocean-module-card glass-panel">
+                <div class="module-header">
+                  <div class="module-icon icon-cyan"><i class="fa-solid fa-wave-square"></i></div>
+                  <span class="badge badge-active">Active • 24/7</span>
+                </div>
+                <h4>Wave & Swell Forecast</h4>
+                <p>Numeric wave height predictions, swells, wave periods, and sea surface boundary condition manuals.</p>
+                <div class="module-footer">
+                  <span class="text-muted"><i class="fa-solid fa-file-pdf"></i> SOP & Guides</span>
+                  <button class="btn btn-secondary btn-sm" onclick="navigateToScreen('sops')">Explore SOPs <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
+              </div>
+
+              <div class="ocean-module-card glass-panel">
+                <div class="module-header">
+                  <div class="module-icon icon-emerald"><i class="fa-solid fa-tower-broadcast"></i></div>
+                  <span class="badge badge-approved">Normal • Standby</span>
+                </div>
+                <h4>Tsunami Advisory System</h4>
+                <p>Early warning seismic sensor networks, sea level buoy arrays, and coastal inundation warning protocols.</p>
+                <div class="module-footer">
+                  <span class="text-muted"><i class="fa-solid fa-file-pdf"></i> Emergency Policy</span>
+                  <button class="btn btn-secondary btn-sm" onclick="navigateToScreen('sops')">Explore SOPs <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
+              </div>
+
+              <div class="ocean-module-card glass-panel">
+                <div class="module-header">
+                  <div class="module-icon icon-amber"><i class="fa-solid fa-temperature-arrow-up"></i></div>
+                  <span class="badge badge-draft">Satellite Watch</span>
+                </div>
+                <h4>Coral Bleaching Watch</h4>
+                <p>Thermal stress ocean monitoring, Sea Surface Temp hotspot analysis, and marine ecosystem risk guides.</p>
+                <div class="module-footer">
+                  <span class="text-muted"><i class="fa-solid fa-video"></i> Video Guides</span>
+                  <button class="btn btn-secondary btn-sm" onclick="navigateToScreen('documents')">Media Assets <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
+              </div>
+
+              <div class="ocean-module-card glass-panel">
+                <div class="module-header">
+                  <div class="module-icon icon-purple"><i class="fa-solid fa-oil-well"></i></div>
+                  <span class="badge badge-active">High Precision</span>
+                </div>
+                <h4>Oil Spill Trajectory</h4>
+                <p>Hydrodynamic marine current modeling, chemical drift trajectory, and pollution response SOPs.</p>
+                <div class="module-footer">
+                  <span class="text-muted"><i class="fa-solid fa-file-pdf"></i> Incident Manual</span>
+                  <button class="btn btn-secondary btn-sm" onclick="navigateToScreen('sops')">Explore SOPs <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
+              </div>
+
+              <div class="ocean-module-card glass-panel">
+                <div class="module-header">
+                  <div class="module-icon icon-cyan"><i class="fa-solid fa-life-ring"></i></div>
+                  <span class="badge badge-active">Ready 24/7</span>
+                </div>
+                <h4>Search & Rescue (SAR)</h4>
+                <p>Drift predictions and search area optimization models assisting maritime search and rescue operations.</p>
+                <div class="module-footer">
+                  <span class="text-muted"><i class="fa-solid fa-compass"></i> Rescue Protocol</span>
+                  <button class="btn btn-secondary btn-sm" onclick="navigateToScreen('sops')">Explore SOPs <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
+              </div>
+
+              <div class="ocean-module-card glass-panel">
+                <div class="module-header">
+                  <div class="module-icon icon-emerald"><i class="fa-solid fa-fish-fins"></i></div>
+                  <span class="badge badge-approved">Daily Map Release</span>
+                </div>
+                <h4>Potential Fishing Zones</h4>
+                <p>Satellite chlorophyll and sea temperature advisories assisting coastal fishing communities.</p>
+                <div class="module-footer">
+                  <span class="text-muted"><i class="fa-solid fa-file-pdf"></i> Advisory Maps</span>
+                  <button class="btn btn-secondary btn-sm" onclick="navigateToScreen('documents')">Media Assets <i class="fa-solid fa-arrow-right"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. MIDDLE GRAPHICS & QUICK CHECKS -->
           <div class="dashboard-details">
             <!-- Dynamic Services Distribution -->
             <div class="details-card glass-panel service-distribution-panel">
@@ -754,7 +845,7 @@
       </div>
 
       <!-- Script entry point -->
-      <script src="app.js"></script>
+      <script src="app.js?v=3.0"></script>
 </body>
 
 </html>
