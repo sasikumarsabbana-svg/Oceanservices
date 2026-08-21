@@ -149,13 +149,17 @@
           <!-- Theme Accent Selector -->
           <div class="theme-switcher-group">
             <span class="theme-label text-muted"><i class="fa-solid fa-palette"></i> Accent:</span>
-            <button type="button" class="theme-dot active-theme" data-theme="cyan" title="Neon Cyan Theme" style="background: #00f2fe;"></button>
-            <button type="button" class="theme-dot" data-theme="emerald" title="Emerald Sea Theme" style="background: #00e676;"></button>
-            <button type="button" class="theme-dot" data-theme="cobalt" title="Deep Cobalt Theme" style="background: #a855f7;"></button>
+            <button type="button" class="theme-dot active-theme" data-theme="cyan" title="Neon Cyan Theme"
+              style="background: #00f2fe;"></button>
+            <button type="button" class="theme-dot" data-theme="emerald" title="Emerald Sea Theme"
+              style="background: #00e676;"></button>
+            <button type="button" class="theme-dot" data-theme="cobalt" title="Deep Cobalt Theme"
+              style="background: #a855f7;"></button>
           </div>
 
           <!-- Quick Command Palette Trigger -->
-          <button id="btn-quick-search-trigger" class="btn btn-secondary btn-quick-search" title="Quick Search (Ctrl + K)">
+          <button id="btn-quick-search-trigger" class="btn btn-secondary btn-quick-search"
+            title="Quick Search (Ctrl + K)">
             <i class="fa-solid fa-bolt"></i>
             <span>Quick Search</span>
             <span class="kbd-badge">Ctrl K</span>
@@ -173,14 +177,61 @@
 
         <!-- =================== DASHBOARD SCREEN =================== -->
         <section id="screen-dashboard" class="screen-view active">
-          <!-- STATS CARDS GRID -->
+
+          <!-- 1. OCEAN TELEMETRY LIVE COMMAND HERO BANNER -->
+          <div class="ocean-telemetry-banner glass-panel">
+            <div class="telemetry-header">
+              <div class="telemetry-title">
+                <span class="pulse-beacon"><span class="pulse-beacon-dot"></span> LIVE TELEMETRY</span>
+                <h2>Oceanic Operational Services & Knowledge Command</h2>
+                <p>Real-time monitoring of ocean advisories, standard procedures, and technical releases</p>
+              </div>
+              <div class="telemetry-badge">
+                <i class="fa-solid fa-satellite-dish"></i>
+                <span>INCOIS System Online</span>
+              </div>
+            </div>
+
+            <div class="telemetry-metrics-grid">
+              <div class="telemetry-widget">
+                <div class="widget-icon icon-emerald"><i class="fa-solid fa-tower-broadcast"></i></div>
+                <div class="widget-info">
+                  <span class="widget-label">Tsunami Advisory</span>
+                  <h4 class="text-success"><i class="fa-solid fa-circle-check"></i> NORMAL / STANDBY</h4>
+                </div>
+              </div>
+              <div class="telemetry-widget">
+                <div class="widget-icon icon-cyan"><i class="fa-solid fa-water"></i></div>
+                <div class="widget-info">
+                  <span class="widget-label">Wave Height Forecast</span>
+                  <h4>1.6m <span class="badge badge-active">Moderate Swell</span></h4>
+                </div>
+              </div>
+              <div class="telemetry-widget">
+                <div class="widget-icon icon-amber"><i class="fa-solid fa-temperature-half"></i></div>
+                <div class="widget-info">
+                  <span class="widget-label">Sea Surface Temp (SST)</span>
+                  <h4>27.8 °C <span class="badge badge-approved">Optimal</span></h4>
+                </div>
+              </div>
+              <div class="telemetry-widget">
+                <div class="widget-icon icon-purple"><i class="fa-solid fa-network-wired"></i></div>
+                <div class="widget-info">
+                  <span class="widget-label">Observing Systems</span>
+                  <h4 class="text-cyan"><i class="fa-solid fa-signal"></i> 24/24 Buoys Online</h4>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. STATS CARDS GRID -->
           <div class="stats-grid">
             <div class="stat-card glass-panel">
               <div class="stat-icon icon-cyan"><i class="fa-solid fa-file-invoice"></i></div>
               <div class="stat-info">
                 <h3>Total Documents</h3>
                 <h2 id="stat-total-docs">0</h2>
-                <p>PDF reports and publications</p>
+                <p><span class="trend-up"><i class="fa-solid fa-arrow-trend-up"></i> Technical Archives</span></p>
               </div>
             </div>
             <div class="stat-card glass-panel">
@@ -188,7 +239,7 @@
               <div class="stat-info">
                 <h3>Active SOPs</h3>
                 <h2 id="stat-total-sops">0</h2>
-                <p>Standard operating policies</p>
+                <p><span class="badge badge-approved">100% Compliant</span></p>
               </div>
             </div>
             <div class="stat-card glass-panel">
@@ -196,19 +247,31 @@
               <div class="stat-info">
                 <h3>Dynamic Services</h3>
                 <h2 id="stat-total-services">0</h2>
-                <p>Dynamic operational modules</p>
+                <p><span class="badge badge-active">Operational 24/7</span></p>
+              </div>
+            </div>
+            <div class="stat-card glass-panel">
+              <div class="stat-icon icon-purple"><i class="fa-solid fa-clock-rotate-left"></i></div>
+              <div class="stat-info">
+                <h3>Audit Trail Logs</h3>
+                <h2 id="stat-total-logs">0</h2>
+                <p>System activities recorded</p>
               </div>
             </div>
           </div>
 
-          <!-- MIDDLE GRAPHICS & QUICK CHECKS -->
+          <!-- 3. MIDDLE GRAPHICS & QUICK CHECKS -->
           <div class="dashboard-details">
             <!-- Dynamic Services Distribution -->
             <div class="details-card glass-panel service-distribution-panel">
-              <h3>Service Distribution</h3>
-              <p class="card-subtitle text-muted">Dynamically aggregated asset metrics by Ocean Service</p>
+              <div class="card-header-flex">
+                <div>
+                  <h3>Service Distribution Analytics</h3>
+                  <p class="card-subtitle text-muted">Aggregated SOPs & media assets by ocean service module</p>
+                </div>
+                <span class="badge badge-active"><i class="fa-solid fa-chart-pie"></i> Dynamic</span>
+              </div>
               <div class="dist-chart-container" id="distribution-chart-container">
-                <!-- Fallback list if Chart.js is not loaded, but we'll render custom canvas or CSS charts -->
                 <div class="custom-progress-bars" id="custom-distribution-bars">
                   <p class="text-center text-muted">No operational services mapped yet.</p>
                 </div>
@@ -217,8 +280,13 @@
 
             <!-- Recent Uploads activity list -->
             <div class="details-card glass-panel recent-uploads-panel">
-              <h3>Recent Asset Releases</h3>
-              <p class="card-subtitle text-muted">Latest document and policy uploads in the portal</p>
+              <div class="card-header-flex">
+                <div>
+                  <h3>Recent Asset Releases</h3>
+                  <p class="card-subtitle text-muted">Latest document and policy uploads in the portal</p>
+                </div>
+                <span class="badge badge-approved"><i class="fa-solid fa-bolt"></i> Live Feed</span>
+              </div>
               <div class="table-wrapper">
                 <table class="data-table">
                   <thead>
@@ -667,25 +735,26 @@
         </div>
         <button class="modal-close-btn" id="btn-close-video-viewer"><i class="fa-solid fa-xmark"></i></button>
       </div>
-  <!-- 7. UNIVERSAL COMMAND PALETTE MODAL (Ctrl + K) -->
-  <div id="modal-command-palette" class="modal-overlay">
-    <div class="command-palette-card glass-panel">
-      <div class="command-palette-header">
-        <i class="fa-solid fa-magnifying-glass"></i>
-        <input type="text" id="cmd-palette-input" placeholder="Type to search SOPs, Media Assets, Services, or Users... (Esc to close)" autocomplete="off">
-        <span class="kbd-badge">ESC</span>
-      </div>
-      <div class="command-palette-results" id="cmd-palette-results">
-        <div class="cmd-item-placeholder">
-          <i class="fa-solid fa-compass text-muted"></i>
-          <p class="text-muted">Start typing to instantly query across all portal resources...</p>
+      <!-- 7. UNIVERSAL COMMAND PALETTE MODAL (Ctrl + K) -->
+      <div id="modal-command-palette" class="modal-overlay">
+        <div class="command-palette-card glass-panel">
+          <div class="command-palette-header">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="cmd-palette-input"
+              placeholder="Type to search SOPs, Media Assets, Services, or Users... (Esc to close)" autocomplete="off">
+            <span class="kbd-badge">ESC</span>
+          </div>
+          <div class="command-palette-results" id="cmd-palette-results">
+            <div class="cmd-item-placeholder">
+              <i class="fa-solid fa-compass text-muted"></i>
+              <p class="text-muted">Start typing to instantly query across all portal resources...</p>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
 
-  <!-- Script entry point -->
-  <script src="app.js"></script>
+      <!-- Script entry point -->
+      <script src="app.js"></script>
 </body>
 
 </html>

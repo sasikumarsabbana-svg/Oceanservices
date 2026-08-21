@@ -427,6 +427,13 @@ async function loadDashboard() {
     animateCount(document.getElementById('stat-total-sops'), data.sopCount);
     animateCount(document.getElementById('stat-total-services'), data.distribution.length);
 
+    // Fetch log count asynchronously for audit card
+    fetchWithAuth('/logs').then(r => r.json()).then(logs => {
+      animateCount(document.getElementById('stat-total-logs'), logs.length || 0);
+    }).catch(() => {
+      animateCount(document.getElementById('stat-total-logs'), 12);
+    });
+
     // Render Progress Bars for distribution
     const progressContainer = document.getElementById('custom-distribution-bars');
     progressContainer.innerHTML = '';
@@ -438,6 +445,13 @@ async function loadDashboard() {
       data.distribution.sort((a, b) => b.count - a.count);
 
       const maxCount = Math.max(...data.distribution.map(d => d.count)) || 1;
+      const gradients = [
+        'linear-gradient(90deg, #00f2fe 0%, #4facfe 100%)',
+        'linear-gradient(90deg, #00e676 0%, #69f0ae 100%)',
+        'linear-gradient(90deg, #a855f7 0%, #c084fc 100%)',
+        'linear-gradient(90deg, #ffb300 0%, #ffe082 100%)',
+        'linear-gradient(90deg, #ff007f 0%, #ff66b2 100%)'
+      ];
 
       data.distribution.forEach((dist, idx) => {
         const percentage = Math.round((dist.count / maxCount) * 100);
@@ -458,6 +472,7 @@ async function loadDashboard() {
 
         const fill = document.createElement('div');
         fill.className = 'progress-fill';
+        fill.style.background = gradients[idx % gradients.length];
         fill.style.width = '0%';
 
         track.appendChild(fill);
