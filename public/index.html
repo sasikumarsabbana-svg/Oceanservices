@@ -14,26 +14,25 @@
   <!-- FontAwesome for Premium Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <!-- Core Application Stylesheet -->
-  <link rel="stylesheet" href="app.css?v=3.0">
+  <link rel="stylesheet" href="app.css?v=4.0">
 </head>
 
 <body>
 
-  <!-- GLOBAL BACKGROUND EFFECTS -->
-  <div class="ocean-video-bg">
-    <div class="ocean-wave ocean-wave-1"></div>
-    <div class="ocean-wave ocean-wave-2"></div>
-    <div class="ocean-wave ocean-wave-3"></div>
-    <div class="ocean-video-overlay"></div>
-  </div>
-
-  <!-- FLOWING WAVE ANIMATION (Aerial Ocean View) -->
-  <div class="flowing-waves-bg">
-    <div class="wave-line wave-line-1"></div>
-    <div class="wave-line wave-line-2"></div>
-    <div class="wave-line wave-line-3"></div>
-    <div class="wave-line wave-line-4"></div>
-    <div class="wave-line wave-line-5"></div>
+  <!-- GLOBAL 3D OCEAN DEPTH BACKGROUND -->
+  <div class="ocean-3d-bg">
+    <div class="ocean-3d-caustics"></div>
+    <div class="ocean-3d-mesh-container">
+      <div class="ocean-3d-mesh-grid"></div>
+    </div>
+    <div class="ocean-3d-particles">
+      <span class="p-bubble p1"></span>
+      <span class="p-bubble p2"></span>
+      <span class="p-bubble p3"></span>
+      <span class="p-bubble p4"></span>
+      <span class="p-bubble p5"></span>
+    </div>
+    <div class="ocean-vignette-overlay"></div>
   </div>
 
   <!-- TOAST NOTIFICATION CONTAINER -->
@@ -845,7 +844,7 @@
       </div>
 
       <!-- Script entry point -->
-      <script src="app.js?v=3.0"></script>
+      <script src="app.js?v=4.0"></script>
 </body>
 
 </html>

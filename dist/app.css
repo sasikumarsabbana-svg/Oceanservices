@@ -98,98 +98,94 @@ body {
   position: relative;
 }
 
-/* Ocean video-like animated background */
-.ocean-video-bg {
+/* ==========================================================================
+   GLOBAL 3D OCEAN DEPTH BACKGROUND
+   ========================================================================== */
+.ocean-3d-bg {
   position: fixed;
   inset: 0;
   z-index: 0;
   overflow: hidden;
+  background: radial-gradient(circle at 50% 0%, #082d5a 0%, #031530 45%, #010a19 100%);
+}
+
+.ocean-3d-caustics {
+  position: absolute;
+  inset: 0;
   background:
-    radial-gradient(circle at 40% 18%, rgba(0, 180, 255, 0.28), transparent 14%),
-    radial-gradient(circle at 84% 10%, rgba(0, 116, 255, 0.18), transparent 18%),
-    linear-gradient(180deg, #05234c 0%, #041d44 22%, #021634 52%, #011025 100%);
-  background-size: 240% 240%, 210% 210%, cover;
-  animation: oceanFlow 26s ease-in-out infinite;
+    radial-gradient(ellipse at 30% 0%, rgba(0, 242, 254, 0.22) 0%, transparent 60%),
+    radial-gradient(ellipse at 75% 10%, rgba(0, 198, 255, 0.18) 0%, transparent 50%),
+    radial-gradient(circle at 50% 40%, rgba(0, 230, 118, 0.08) 0%, transparent 70%);
+  filter: blur(20px);
+  animation: causticsFloat 18s ease-in-out infinite alternate;
 }
 
-.ocean-video-bg::before,
-.ocean-video-bg::after {
-  content: "";
+.ocean-3d-mesh-container {
   position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.ocean-video-bg::before {
-  background: repeating-linear-gradient(
-    170deg,
-    rgba(255,255,255,0.05) 0,
-    rgba(255,255,255,0.05) 1px,
-    transparent 1px,
-    transparent 24px
-  );
-  opacity: 0.22;
-  animation: surfaceLines 7s linear infinite;
-}
-
-.ocean-video-bg::after {
-  background-image:
-    radial-gradient(circle at 20% 12%, rgba(144, 255, 255, 0.18), transparent 16%),
-    radial-gradient(circle at 72% 10%, rgba(125, 232, 255, 0.14), transparent 20%),
-    radial-gradient(circle at 42% 62%, rgba(255, 255, 255, 0.12), transparent 14%);
-  opacity: 0.72;
-  animation: softGlow 18s ease-in-out infinite alternate;
-}
-
-.ocean-wave {
-  position: absolute;
-  left: -35%;
-  width: 170%;
-  height: 58%;
-  background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(0,142,226,0.16));
-  opacity: 0.55;
-  border-radius: 50%;
-  filter: blur(8px);
-  box-shadow: inset 0 0 60px rgba(255,255,255,0.1), 0 0 40px rgba(0,100,155,0.15);
-}
-
-.ocean-wave::before {
-  content: "";
-  position: absolute;
-  left: 10%;
-  right: 10%;
-  top: 14%;
-  height: 44%;
-  background: radial-gradient(circle at 50% 15%, rgba(255,255,255,0.8), transparent 30%);
-  opacity: 0.3;
-  filter: blur(4px);
-}
-
-.ocean-wave-1 {
-  top: 30%;
-  animation: waveMove1 18s ease-in-out infinite;
-}
-
-.ocean-wave-2 {
-  top: 50%;
-  animation: waveMove2 15s ease-in-out infinite;
-  opacity: 0.45;
-}
-
-.ocean-wave-3 {
-  top: 68%;
-  animation: waveMove3 12s ease-in-out infinite;
-  opacity: 0.38;
-}
-
-.ocean-video-overlay {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle at 50% 8%, rgba(255,255,255,0.16), transparent 18%),
-    linear-gradient(180deg, rgba(3, 25, 45, 0.18), rgba(4, 12, 24, 0.08));
+  inset: -50%;
+  perspective: 600px;
   pointer-events: none;
   opacity: 0.35;
-  animation: overlayPulse 20s ease-in-out infinite;
+}
+
+.ocean-3d-mesh-grid {
+  width: 200%;
+  height: 200%;
+  position: absolute;
+  top: 10%;
+  left: -50%;
+  background-image: 
+    linear-gradient(90deg, rgba(0, 242, 254, 0.15) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(0, 242, 254, 0.15) 1px, transparent 1px);
+  background-size: 60px 60px;
+  transform: rotateX(72deg) rotateZ(-15deg);
+  animation: meshWave 24s linear infinite;
+  transform-origin: center center;
+}
+
+.ocean-3d-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.p-bubble {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.8), rgba(0, 242, 254, 0.2));
+  box-shadow: 0 0 12px rgba(0, 242, 254, 0.5);
+  animation: bubbleRise 16s infinite linear;
+}
+
+.p-bubble.p1 { width: 12px; height: 12px; left: 15%; animation-duration: 14s; animation-delay: 0s; }
+.p-bubble.p2 { width: 18px; height: 18px; left: 35%; animation-duration: 18s; animation-delay: 3s; }
+.p-bubble.p3 { width: 8px; height: 8px; left: 60%; animation-duration: 12s; animation-delay: 1s; }
+.p-bubble.p4 { width: 22px; height: 22px; left: 80%; animation-duration: 22s; animation-delay: 4s; }
+.p-bubble.p5 { width: 10px; height: 10px; left: 45%; animation-duration: 15s; animation-delay: 2s; }
+
+.ocean-vignette-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, transparent 60%, rgba(1, 8, 20, 0.75) 100%);
+  pointer-events: none;
+}
+
+@keyframes causticsFloat {
+  0% { transform: scale(1) translateY(0); opacity: 0.7; }
+  50% { transform: scale(1.1) translateY(-20px); opacity: 0.95; }
+  100% { transform: scale(1) translateY(0); opacity: 0.7; }
+}
+
+@keyframes meshWave {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 1200px; }
+}
+
+@keyframes bubbleRise {
+  0% { transform: translateY(110vh) scale(0.6); opacity: 0; }
+  20% { opacity: 0.8; }
+  80% { opacity: 0.8; }
+  100% { transform: translateY(-10vh) scale(1.2); opacity: 0; }
 }
 
 @keyframes surfaceLines {
