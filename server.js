@@ -26,8 +26,9 @@ folders.forEach(dir => {
 // Serve static uploaded documents and SOPs
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Serve frontend single page app
-app.use(express.static(path.join(__dirname, 'public')));
+// Serve frontend single page app (dist directory if built, fallback to public)
+const staticDir = fs.existsSync(path.join(__dirname, 'dist')) ? path.join(__dirname, 'dist') : path.join(__dirname, 'public');
+app.use(express.static(staticDir));
 
 // Mount API Routers
 const { router: authRouter, requireAuth, logActivity } = require('./src/routes/auth');
@@ -74,7 +75,7 @@ app.post('/api/documents/:id/download', requireAuth, async (req, res) => {
 
 // Fallback to serving the HTML index for SPA routing
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(staticDir, 'index.html'));
 });
 
 // Start the server

@@ -188,14 +188,21 @@ async function query(sql, params = []) {
         let matchAll = true;
         let whereParamIdx = 0;
         for (const condition of conditions) {
-          const parts = condition.split(/\s*=\s*/);
+          const isNotEqual = condition.includes('!=');
+          const parts = isNotEqual ? condition.split(/\s*!=\s*/) : condition.split(/\s*=\s*/);
           const col = parts[0].trim().replace(/^\w+\./, '');
           const valPlaceholder = parts[1] ? parts[1].trim() : '';
 
           if (valPlaceholder === '?') {
             const expectedVal = whereParams[whereParamIdx++];
-            if (row[col] != expectedVal) {
-              matchAll = false;
+            if (isNotEqual) {
+              if (row[col] == expectedVal) {
+                matchAll = false;
+              }
+            } else {
+              if (row[col] != expectedVal) {
+                matchAll = false;
+              }
             }
           }
         }
