@@ -14,25 +14,31 @@
   <!-- FontAwesome for Premium Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <!-- Core Application Stylesheet -->
-  <link rel="stylesheet" href="app.css?v=4.0">
+  <link rel="stylesheet" href="app.css?v=5.0">
 </head>
 
 <body>
 
-  <!-- GLOBAL 3D OCEAN DEPTH BACKGROUND -->
-  <div class="ocean-3d-bg">
-    <div class="ocean-3d-caustics"></div>
-    <div class="ocean-3d-mesh-container">
-      <div class="ocean-3d-mesh-grid"></div>
+  <!-- GLOBAL OCEAN WAVES & SHORELINE SAND BACKGROUND -->
+  <div class="ocean-shore-bg">
+    <!-- Deep Ocean Water Base -->
+    <div class="shore-water-layer"></div>
+    
+    <!-- Golden Sea Sand Base at Bottom/Shore -->
+    <div class="shore-sand-layer">
+      <div class="wet-sand-sheen"></div>
     </div>
-    <div class="ocean-3d-particles">
-      <span class="p-bubble p1"></span>
-      <span class="p-bubble p2"></span>
-      <span class="p-bubble p3"></span>
-      <span class="p-bubble p4"></span>
-      <span class="p-bubble p5"></span>
+    
+    <!-- Animated Rolling Foam Waves Washing Over Sand -->
+    <div class="shore-wave-wrap">
+      <div class="foam-wave wave-shore-1"></div>
+      <div class="foam-wave wave-shore-2"></div>
+      <div class="foam-wave wave-shore-3"></div>
     </div>
-    <div class="ocean-vignette-overlay"></div>
+    
+    <!-- Sunlight Caustics & Vignette Overlay -->
+    <div class="shore-caustics-layer"></div>
+    <div class="shore-vignette"></div>
   </div>
 
   <!-- TOAST NOTIFICATION CONTAINER -->
@@ -844,7 +850,7 @@
       </div>
 
       <!-- Script entry point -->
-      <script src="app.js?v=4.0"></script>
+      <script src="app.js?v=5.0"></script>
 </body>
 
 </html>
