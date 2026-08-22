@@ -1,0 +1,17 @@
+[
+  {
+    "id": 1,
+    "category_name": "Standard Operating Procedures",
+    "parent_id": null
+  },
+  {
+    "id": 2,
+    "category_name": "Technical Reports",
+    "parent_id": null
+  },
+  {
+    "id": 3,
+    "category_name": "Video Guides",
+    "parent_id": null
+  }
+]

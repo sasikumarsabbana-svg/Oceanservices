@@ -1,0 +1,74 @@
+[
+  {
+    "id": 1,
+    "title": "Wave Forecast Model Operational Guide",
+    "description": "Comprehensive manual describing the numeric model settings, boundary conditions, and wave forecasting steps.",
+    "file_path": "/uploads/documents/wave_guide_v1.pdf",
+    "type": "PDF",
+    "service_id": 1,
+    "category_id": 1,
+    "tags": "wave, model, operational, guide",
+    "uploaded_by": 1,
+    "created_at": "2026-06-10T04:50:08.824Z"
+  },
+  {
+    "id": 2,
+    "title": "Coral Bleaching Alert Sea Temperature Video Guide",
+    "description": "Video walkthrough explaining Sea Surface Temperature (SST) satellite anomalies, thermal stress hotspots, and coral bleaching risk alerts.",
+    "file_path": "https://www.youtube.com/watch?v=uK731B6J8sA",
+    "type": "VIDEO",
+    "service_id": 7,
+    "category_id": 3,
+    "tags": "coral, bleaching, sea temperature, sst, tutorial",
+    "uploaded_by": 1,
+    "created_at": "2026-06-10T04:50:08.824Z"
+  },
+  {
+    "id": 3,
+    "title": "Storm Surge Response Procedure",
+    "description": "A short reference guide on storm surge advisory operations and emergency coastal response steps.",
+    "file_path": "/uploads/documents/storm_surge_response_v1.pdf",
+    "type": "PDF",
+    "service_id": 4,
+    "category_id": 2,
+    "tags": "storm surge, emergency, advisory, coastal response",
+    "uploaded_by": 1,
+    "created_at": "2026-06-10T04:50:08.824Z"
+  },
+  {
+    "id": 4,
+    "title": "Oil Spill Hydrodynamic Current & Drift Trajectory Guide",
+    "description": "Technical video guide on modeling marine oil chemical drift, hydrodynamic current trajectories, and containment SOPs.",
+    "file_path": "https://www.youtube.com/watch?v=wP1p_gB7yoc",
+    "type": "VIDEO",
+    "service_id": 5,
+    "category_id": 3,
+    "tags": "oil spill, detection, drift, response, video guide",
+    "uploaded_by": 1,
+    "created_at": "2026-06-10T04:50:08.824Z"
+  },
+  {
+    "id": 5,
+    "title": "Tsunami Early Warning System & Buoy Network Guide",
+    "description": "Operational video on deep sea tsunami buoys, seismic detection networks, and coastal inundation warning protocols.",
+    "file_path": "https://www.youtube.com/watch?v=2v-Z3u80x6k",
+    "type": "VIDEO",
+    "service_id": 3,
+    "category_id": 3,
+    "tags": "tsunami, early warning, buoy, seismic, advisory",
+    "uploaded_by": 1,
+    "created_at": "2026-06-10T05:00:00.000Z"
+  },
+  {
+    "id": 6,
+    "title": "Numeric Wave Forecasting & Marine Swell Model Guide",
+    "description": "Video manual covering sea boundary wave conditions, swell periods, wave heights, and marine forecast models.",
+    "file_path": "https://www.youtube.com/watch?v=w2P8wYt7Qo0",
+    "type": "VIDEO",
+    "service_id": 1,
+    "category_id": 3,
+    "tags": "wave, swell, forecasting, hydrodynamic, oceanography",
+    "uploaded_by": 1,
+    "created_at": "2026-06-10T05:15:00.000Z"
+  }
+]

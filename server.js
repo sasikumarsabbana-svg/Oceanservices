@@ -28,6 +28,9 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Serve frontend single page app (dist directory if built, fallback to public)
 const staticDir = fs.existsSync(path.join(__dirname, 'dist')) ? path.join(__dirname, 'dist') : path.join(__dirname, 'public');
+if (fs.existsSync(path.join(staticDir, 'uploads'))) {
+  app.use('/uploads', express.static(path.join(staticDir, 'uploads')));
+}
 app.use(express.static(staticDir));
 
 // Mount API Routers

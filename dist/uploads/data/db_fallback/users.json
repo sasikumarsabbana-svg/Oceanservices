@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "name": "Admin Officer",
+    "email": "admin@ocean.gov",
+    "password": "$2a$08$JQbzzc0.UfxNMHXMwaXvhOWiOdOaSfmeLKTG0KKG2ZgJQE48CXogS",
+    "role": "Admin",
+    "created_at": "2026-06-05T04:51:52.677Z"
+  },
+  {
+    "id": 2,
+    "name": "Service Analyst",
+    "email": "user@ocean.gov",
+    "password": "$2a$08$dqCIJ0zOIvbmNmNK0Ytqru183XAyvg6fMef6kjwIC0EJzek1phzkC",
+    "role": "User",
+    "created_at": "2026-06-05T04:51:52.677Z"
+  }
+]

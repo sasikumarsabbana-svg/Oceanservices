@@ -37,6 +37,14 @@ try {
   copyDirSync(publicDir, distDir);
   console.log('Copied public static assets to dist/');
 
+  // Copy uploads directory to dist/uploads
+  const uploadsDir = path.join(rootDir, 'uploads');
+  const distUploadsDir = path.join(distDir, 'uploads');
+  if (fs.existsSync(uploadsDir)) {
+    copyDirSync(uploadsDir, distUploadsDir);
+    console.log('Copied uploaded document assets to dist/uploads/');
+  }
+
   // Create Netlify SPA routing _redirects file in dist
   const redirectsContent = '/* /index.html 200\n';
   fs.writeFileSync(path.join(distDir, '_redirects'), redirectsContent, 'utf8');
