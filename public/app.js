@@ -33,7 +33,7 @@ function initThemeAccent() {
 }
 
 function setThemeAccent(themeName) {
-  document.body.classList.remove('theme-cyan', 'theme-emerald', 'theme-cobalt');
+  document.body.classList.remove('theme-cyan', 'theme-emerald', 'theme-cobalt', 'theme-amber');
   if (themeName !== 'cyan') {
     document.body.classList.add(`theme-${themeName}`);
   }
@@ -264,6 +264,11 @@ function setupEventListeners() {
   document.getElementById('cmd-palette-input').addEventListener('input', (e) => {
     handleCommandPaletteSearch(e.target.value);
   });
+
+  // Export CSV Button Event Listeners
+  document.getElementById('btn-export-sops-csv')?.addEventListener('click', exportSOPsCSV);
+  document.getElementById('btn-export-docs-csv')?.addEventListener('click', exportMediaCSV);
+  document.getElementById('btn-export-logs-csv')?.addEventListener('click', exportLogsCSV);
 
   // Set real date
   const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -1211,7 +1216,7 @@ function playVideo(url, title) {
 
   // Transform YouTube URL to embed
   const ytRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
-  const match = url.match(ytRegex);
+  const match = url ? url.match(ytRegex) : null;
 
   if (match) {
     const videoId = match[1];
@@ -1232,6 +1237,71 @@ function playVideo(url, title) {
 document.getElementById('btn-close-video-viewer').addEventListener('click', () => {
   document.getElementById('video-viewer-player-container').innerHTML = '';
 });
+
+// ==========================================================================
+// DATA EXPORT ENGINE (CSV)
+// ==========================================================================
+function exportToCSV(filename, headers, dataRows) {
+  if (!dataRows || dataRows.length === 0) {
+    showToast('No data available to export.', 'info');
+    return;
+  }
+  let csvContent = '\uFEFF'; // UTF-8 BOM for Excel compatibility
+  csvContent += headers.map(h => `"${String(h).replace(/"/g, '""')}"`).join(',') + '\r\n';
+
+  dataRows.forEach(row => {
+    const line = row.map(cell => `"${String(cell ?? '').replace(/"/g, '""')}"`).join(',');
+    csvContent += line + '\r\n';
+  });
+
+  const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.setAttribute('href', url);
+  link.setAttribute('download', filename);
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+  URL.revokeObjectURL(url);
+
+  showToast(`Exported ${dataRows.length} record(s) to ${filename}`, 'success');
+}
+
+async function exportSOPsCSV() {
+  try {
+    const res = await fetchWithAuth('/sops');
+    const sops = await res.json();
+    const headers = ['SOP ID', 'Title', 'Service Name', 'Category Name', 'Created At'];
+    const rows = sops.map(s => [s.id, s.title, s.service_name, s.category_name, s.created_at]);
+    exportToCSV(`OceanServices_SOPs_${new Date().toISOString().slice(0, 10)}.csv`, headers, rows);
+  } catch (err) {
+    showToast('Failed to export SOPs list.', 'error');
+  }
+}
+
+async function exportMediaCSV() {
+  try {
+    const res = await fetchWithAuth('/documents');
+    const docs = await res.json();
+    const headers = ['Document ID', 'Format Type', 'Title', 'Service Name', 'Category Name', 'Tags', 'Created At'];
+    const rows = docs.map(d => [d.id, d.type, d.title, d.service_name, d.category_name, d.tags || '', d.created_at]);
+    exportToCSV(`OceanServices_MediaLibrary_${new Date().toISOString().slice(0, 10)}.csv`, headers, rows);
+  } catch (err) {
+    showToast('Failed to export media library.', 'error');
+  }
+}
+
+async function exportLogsCSV() {
+  try {
+    const res = await fetchWithAuth('/logs');
+    const logs = await res.json();
+    const headers = ['Log ID', 'Timestamp', 'User ID', 'User Name', 'User Email', 'Action', 'Reference ID'];
+    const rows = logs.map(l => [l.id, l.timestamp, l.user_id, l.user_name || 'System', l.user_email || '', l.action, l.reference_id || 'N/A']);
+    exportToCSV(`OceanServices_AuditLogs_${new Date().toISOString().slice(0, 10)}.csv`, headers, rows);
+  } catch (err) {
+    showToast('Failed to export audit logs.', 'error');
+  }
+}
 
 // ==========================================================================
 // GLOBAL UI UTILITY METHODS

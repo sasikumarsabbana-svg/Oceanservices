@@ -13,14 +13,38 @@
   },
   {
     "id": 2,
-    "title": "Coral Bleaching Alert Sea Temperature Video Guide",
+    "title": "Oceanic Operational Services & Early Warning System Guide",
+    "description": "Official video guide on operational oceanography, early warning tsunami sensors, and swell forecasting.",
+    "file_path": "https://www.youtube.com/watch?v=2v-Z3u80x6k",
+    "type": "VIDEO",
+    "service_id": 1,
+    "category_id": 3,
+    "tags": "ocean, early warning, tsunami, swell, operational",
+    "uploaded_by": 1,
+    "created_at": "2026-06-05T04:51:52.684Z"
+  },
+  {
+    "id": 3,
+    "title": "Coral Bleaching Watch & Sea Surface Temp Video Tutorial",
     "description": "Video instructions showing how to navigate SST dashboards and interpret bleaching warning levels.",
-    "file_path": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "file_path": "https://www.youtube.com/watch?v=uK731B6J8sA",
     "type": "VIDEO",
     "service_id": 7,
     "category_id": 3,
     "tags": "coral, bleaching, sea temperature, sst, tutorial",
     "uploaded_by": 1,
-    "created_at": "2026-06-05T04:51:52.684Z"
+    "created_at": "2026-06-05T05:10:00.000Z"
+  },
+  {
+    "id": 4,
+    "title": "Ocean Wave & Current Hydrodynamic Modeling Video",
+    "description": "Numerical wave height predictions, ocean swells, currents, and marine forecasting video walkthrough.",
+    "file_path": "https://www.youtube.com/watch?v=w2P8wYt7Qo0",
+    "type": "VIDEO",
+    "service_id": 1,
+    "category_id": 2,
+    "tags": "wave, current, hydrodynamic, oceanography, forecast",
+    "uploaded_by": 1,
+    "created_at": "2026-06-05T05:30:00.000Z"
   }
 ]

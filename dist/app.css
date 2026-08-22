@@ -54,6 +54,13 @@ body.theme-cobalt {
   --glass-border-focus: rgba(168, 85, 247, 0.4);
 }
 
+body.theme-amber {
+  --primary: #f59e0b;
+  --primary-rgb: 245, 158, 11;
+  --primary-hover: #fbbf24;
+  --glass-border-focus: rgba(245, 158, 11, 0.4);
+}
+
 /* Custom Scrollbars */
 ::-webkit-scrollbar {
   width: 8px;
@@ -1822,14 +1829,17 @@ select.form-control {
 }
 
 /* Video viewer custom integration */
-.video-viewer-content {
+.video-viewer-frame-container, .video-viewer-content {
   background: black;
   width: 100%;
   position: relative;
   padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
   height: 0;
+  border-radius: var(--border-radius-md);
+  overflow: hidden;
 }
 
+.video-viewer-frame-container iframe, .video-viewer-frame-container video,
 .video-viewer-content iframe, .video-viewer-content video {
   position: absolute;
   top: 0;

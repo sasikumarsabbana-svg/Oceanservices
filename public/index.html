@@ -155,6 +155,8 @@
               style="background: #00e676;"></button>
             <button type="button" class="theme-dot" data-theme="cobalt" title="Deep Cobalt Theme"
               style="background: #a855f7;"></button>
+            <button type="button" class="theme-dot" data-theme="amber" title="Sunset Amber Theme"
+              style="background: #f59e0b;"></button>
           </div>
 
           <!-- Quick Command Palette Trigger -->
@@ -419,10 +421,15 @@
                   style="min-width:150px;">
               </div>
             </div>
-            <!-- Add SOP trigger -->
-            <button id="btn-add-sop-modal" class="btn btn-primary">
-              <i class="fa-solid fa-plus"></i> Create Master SOP
-            </button>
+            <!-- Add SOP trigger & Export -->
+            <div style="display:flex; gap:10px; align-items:center;">
+              <button id="btn-export-sops-csv" class="btn btn-secondary">
+                <i class="fa-solid fa-file-csv"></i> Export CSV
+              </button>
+              <button id="btn-add-sop-modal" class="btn btn-primary">
+                <i class="fa-solid fa-plus"></i> Create Master SOP
+              </button>
+            </div>
           </div>
 
           <!-- SOP Master List Table -->
@@ -475,10 +482,15 @@
                   style="min-width:150px;">
               </div>
             </div>
-            <!-- Add Document trigger -->
-            <button id="btn-add-doc-modal" class="btn btn-primary">
-              <i class="fa-solid fa-cloud-arrow-up"></i> Upload Media Asset
-            </button>
+            <!-- Add Document trigger & Export -->
+            <div style="display:flex; gap:10px; align-items:center;">
+              <button id="btn-export-docs-csv" class="btn btn-secondary">
+                <i class="fa-solid fa-file-csv"></i> Export CSV
+              </button>
+              <button id="btn-add-doc-modal" class="btn btn-primary">
+                <i class="fa-solid fa-cloud-arrow-up"></i> Upload Media Asset
+              </button>
+            </div>
           </div>
 
           <!-- Documents Grid View -->
@@ -542,9 +554,14 @@
         <!-- =================== AUDIT TRAIL SCREEN =================== -->
         <section id="screen-logs" class="screen-view">
           <div class="table-card glass-panel">
-            <div class="table-header-title">
-              <h3>System Activity Logs</h3>
-              <p class="text-muted">Real-time audit trailing of system changes, uploads, downloads, and edits</p>
+            <div class="card-header-flex" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
+              <div>
+                <h3>System Activity Logs</h3>
+                <p class="text-muted">Real-time audit trailing of system changes, uploads, downloads, and edits</p>
+              </div>
+              <button id="btn-export-logs-csv" class="btn btn-secondary">
+                <i class="fa-solid fa-file-csv"></i> Export Audit Logs (CSV)
+              </button>
             </div>
             <div class="table-wrapper">
               <table class="data-table">
@@ -826,26 +843,32 @@
         </div>
         <button class="modal-close-btn" id="btn-close-video-viewer"><i class="fa-solid fa-xmark"></i></button>
       </div>
-      <!-- 7. UNIVERSAL COMMAND PALETTE MODAL (Ctrl + K) -->
-      <div id="modal-command-palette" class="modal-overlay">
-        <div class="command-palette-card glass-panel">
-          <div class="command-palette-header">
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <input type="text" id="cmd-palette-input"
-              placeholder="Type to search SOPs, Media Assets, Services, or Users... (Esc to close)" autocomplete="off">
-            <span class="kbd-badge">ESC</span>
-          </div>
-          <div class="command-palette-results" id="cmd-palette-results">
-            <div class="cmd-item-placeholder">
-              <i class="fa-solid fa-compass text-muted"></i>
-              <p class="text-muted">Start typing to instantly query across all portal resources...</p>
-            </div>
-          </div>
+      <div class="video-viewer-frame-container" id="video-viewer-player-container">
+        <!-- Dynamic video player iframe or HTML5 video player -->
+      </div>
+    </div>
+  </div>
+
+  <!-- 7. UNIVERSAL COMMAND PALETTE MODAL (Ctrl + K) -->
+  <div id="modal-command-palette" class="modal-overlay">
+    <div class="command-palette-card glass-panel">
+      <div class="command-palette-header">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="cmd-palette-input"
+          placeholder="Type to search SOPs, Media Assets, Services, or Users... (Esc to close)" autocomplete="off">
+        <span class="kbd-badge">ESC</span>
+      </div>
+      <div class="command-palette-results" id="cmd-palette-results">
+        <div class="cmd-item-placeholder">
+          <i class="fa-solid fa-compass text-muted"></i>
+          <p class="text-muted">Start typing to instantly query across all portal resources...</p>
         </div>
       </div>
+    </div>
+  </div>
 
-      <!-- Script entry point -->
-      <script src="app.js?v=6.0"></script>
+  <!-- Script entry point -->
+  <script src="app.js?v=6.0"></script>
 </body>
 
 </html>
