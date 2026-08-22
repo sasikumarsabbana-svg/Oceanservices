@@ -124,7 +124,7 @@ body {
   background-size: cover;
   background-position: center top;
   filter: brightness(0.82) contrast(1.1) saturate(1.15);
-  animation: realOceanMotion 30s ease-in-out infinite alternate;
+  animation: realOceanMotion 8s ease-in-out infinite alternate;
   transform: scale(1.05);
 }
 
@@ -138,48 +138,12 @@ body {
     radial-gradient(circle at 25% 75%, rgba(144, 224, 239, 0.18) 0%, transparent 40%);
   filter: blur(14px);
   mix-blend-mode: overlay;
-  animation: liquidCaustics 12s ease-in-out infinite alternate;
+  animation: liquidCaustics 5s ease-in-out infinite alternate;
 }
 
-/* Organic Translucent Wave Foam Washing Over Real Sand */
-.real-foam-wrap {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-}
-
-.real-foam-wave {
-  position: absolute;
-  width: 140%;
-  left: -20%;
-  border-radius: 45% 55% 60% 40% / 40% 60% 40% 60%;
-  filter: drop-shadow(0 6px 16px rgba(255, 255, 255, 0.7));
-  mix-blend-mode: screen;
-}
-
-.real-wave-1 {
-  bottom: 22%;
-  height: 180px;
-  background: linear-gradient(180deg, 
-    rgba(255, 255, 255, 0.95) 0%, 
-    rgba(255, 255, 255, 0.6) 30%, 
-    rgba(144, 224, 239, 0.3) 70%, 
-    transparent 100%
-  );
-  opacity: 0.85;
-  animation: realWavePulse1 9s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-}
-
-.real-wave-2 {
-  bottom: 35%;
-  height: 220px;
-  background: linear-gradient(180deg, 
-    rgba(255, 255, 255, 0.8) 0%, 
-    rgba(0, 180, 216, 0.4) 40%, 
-    transparent 100%
-  );
-  opacity: 0.65;
-  animation: realWavePulse2 13s cubic-bezier(0.4, 0, 0.2, 1) infinite -3s;
+/* Foam Wrap Hidden as per User Request */
+.real-foam-wrap, .real-foam-wave, .real-wave-1, .real-wave-2 {
+  display: none !important;
 }
 
 .real-ocean-vignette {
