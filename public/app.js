@@ -1211,17 +1211,20 @@ function previewPdf(filePath, title) {
 
 function playVideo(url, title) {
   document.getElementById('video-viewer-title').innerText = title;
+  const linkBtn = document.getElementById('video-viewer-external-link');
+  if (linkBtn) linkBtn.href = url || '#';
+
   const container = document.getElementById('video-viewer-player-container');
   container.innerHTML = '';
 
-  // Transform YouTube URL to embed
+  // Transform YouTube URL to embed (using youtube-nocookie.com for high compatibility)
   const ytRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
   const match = url ? url.match(ytRegex) : null;
 
   if (match) {
     const videoId = match[1];
     container.innerHTML = `
-      <iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      <iframe src="https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     `;
   } else {
     // Treat as raw video mp4/webm stream

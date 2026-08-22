@@ -841,7 +841,12 @@
           <h3 id="video-viewer-title">Video Resource Player</h3>
           <p id="video-viewer-subtitle" class="text-muted">Streaming guide</p>
         </div>
-        <button class="modal-close-btn" id="btn-close-video-viewer"><i class="fa-solid fa-xmark"></i></button>
+        <div style="display:flex; align-items:center; gap:12px;">
+          <a id="video-viewer-external-link" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm" style="display:inline-flex; align-items:center; gap:6px;">
+            <i class="fa-brands fa-youtube" style="color:#ff0000; font-size:14px;"></i> Watch on YouTube
+          </a>
+          <button class="modal-close-btn" id="btn-close-video-viewer"><i class="fa-solid fa-xmark"></i></button>
+        </div>
       </div>
       <div class="video-viewer-frame-container" id="video-viewer-player-container">
         <!-- Dynamic video player iframe or HTML5 video player -->
