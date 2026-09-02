@@ -207,6 +207,7 @@ button, input, textarea {
 .text-gradient {
     background: linear-gradient(135deg, #FFFFFF 30%, var(--primary-coral) 100%);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
@@ -648,7 +649,8 @@ button, input, textarea {
    -------------------------------------------------------------------------- */
 .marquee-section {
     background: rgba(15, 23, 42, 0.6);
-    border-y: 1px solid var(--border-color);
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
     padding: 1.25rem 0;
     overflow: hidden;
     position: relative;
@@ -770,7 +772,8 @@ button, input, textarea {
     gap: 1rem;
     margin: 2rem 0;
     padding: 1.5rem 0;
-    border-y: 1px solid var(--border-color);
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
 }
 
 .stat-card {
