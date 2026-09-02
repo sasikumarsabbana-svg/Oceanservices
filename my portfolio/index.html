@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sabbana Sasikumar | Aspiring Full-Stack Developer</title>
+    <meta name="description" content="Portfolio of Sabbana Sasikumar - Aspiring Full-Stack Developer specializing in Web Development, Python, REST APIs, AI/NLP, and database applications.">
+    <meta name="keywords" content="Sabbana Sasikumar, Full-Stack Developer, Web Developer Portfolio, Python Developer, AI NLP, INCOIS Intern, Vignan MCA">
+    
+    <!-- Open Graph / Meta -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Sabbana Sasikumar | Aspiring Full-Stack Developer">
+    <meta property="og:description" content="Building Ideas. Creating Solutions. Growing as a Full-Stack Developer.">
+    <meta property="og:image" content="assets/images/developer_avatar.jpg">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Background Grid & Decorative Blur Glows -->
+    <div class="bg-grid-overlay"></div>
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+    <div class="glow-orb orb-3"></div>
+
+    <!-- Navigation Header -->
+    <header class="navbar" id="navbar">
+        <div class="container nav-container">
+            <a href="#home" class="nav-logo">
+                <span class="logo-name">Sasikumar</span>
+                <span class="logo-dot">.</span>
+            </a>
+
+            <nav class="nav-menu" id="navMenu">
+                <ul class="nav-list">
+                    <li><a href="#home" class="nav-link active"><i class="fa-solid fa-house"></i> Home</a></li>
+                    <li><a href="#about" class="nav-link"><i class="fa-solid fa-user"></i> About</a></li>
+                    <li><a href="#skills" class="nav-link"><i class="fa-solid fa-code"></i> Skills</a></li>
+                    <li><a href="#experience" class="nav-link"><i class="fa-solid fa-briefcase"></i> Experience</a></li>
+                    <li><a href="#projects" class="nav-link"><i class="fa-solid fa-layer-group"></i> Projects</a></li>
+                    <li><a href="#education" class="nav-link"><i class="fa-solid fa-graduation-cap"></i> Education</a></li>
+                    <li><a href="#contact" class="nav-link"><i class="fa-solid fa-paper-plane"></i> Contact</a></li>
+                </ul>
+            </nav>
+
+            <div class="nav-actions">
+                <a href="#contact" class="btn btn-primary nav-cta">Got a project?</a>
+                <button class="hamburger" id="hamburger" aria-label="Toggle navigation menu">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero-section" id="home">
+            <div class="container hero-grid">
+                <div class="hero-content">
+                    <div class="hero-badge">
+                        <span class="pulse-dot"></span> Available for Opportunities & Projects
+                    </div>
+                    <h1 class="hero-title">
+                        Hello <span class="dot-accent">.</span><br>
+                        I'm <span class="text-gradient">Sabbana Sasikumar</span>
+                    </h1>
+                    <h2 class="hero-subtitle">Aspiring Full-Stack Developer</h2>
+                    
+                    <p class="hero-quote">
+                        <i class="fa-solid fa-quote-left quote-icon"></i>
+                        Building Ideas. Creating Solutions. Growing as a Full-Stack Developer. 🚀
+                    </p>
+
+                    <p class="hero-bio">
+                        Passionate web developer focused on building modern, responsive, and user-friendly web applications. Skilled in frontend, backend APIs, database management, and AI/NLP integrations.
+                    </p>
+
+                    <div class="hero-ctas">
+                        <a href="#contact" class="btn btn-coral">
+                            <i class="fa-solid fa-envelope"></i> Get In Touch
+                        </a>
+                        <a href="#projects" class="btn btn-outline">
+                            <i class="fa-solid fa-code-branch"></i> View Projects
+                        </a>
+                        <button class="btn btn-glass" id="resumeBtn">
+                            <i class="fa-solid fa-file-arrow-down"></i> My Resume
+                        </button>
+                    </div>
+
+                    <div class="hero-quick-stats">
+                        <div class="stat-pill">
+                            <i class="fa-solid fa-laptop-code text-coral"></i>
+                            <span>4+ Core Projects</span>
+                        </div>
+                        <div class="stat-pill">
+                            <i class="fa-solid fa-graduation-cap text-cyan"></i>
+                            <span>MCA 2026 Batch</span>
+                        </div>
+                        <div class="stat-pill">
+                            <i class="fa-solid fa-building-columns text-green"></i>
+                            <span>INCOIS Intern</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hero Avatar & Halo Frame (Inspired by reference screenshot) -->
+                <div class="hero-avatar-wrapper">
+                    <div class="glowing-halo-ring">
+                        <div class="halo-circle circle-outer"></div>
+                        <div class="halo-circle circle-inner"></div>
+                        <div class="tech-orbit-icon icon-1" title="Python"><i class="fa-brands fa-python"></i></div>
+                        <div class="tech-orbit-icon icon-2" title="JavaScript"><i class="fa-brands fa-js"></i></div>
+                        <div class="tech-orbit-icon icon-3" title="HTML5"><i class="fa-brands fa-html5"></i></div>
+                        <div class="tech-orbit-icon icon-4" title="AI & NLP"><i class="fa-solid fa-brain"></i></div>
+                    </div>
+
+                    <div class="avatar-card">
+                        <img src="assets/images/developer_avatar.jpg" alt="Sabbana Sasikumar" id="profileAvatarImg" class="profile-photo">
+                        
+                        <!-- Upload Photo Trigger Overlay -->
+                        <div class="photo-upload-overlay" id="photoUploadOverlay" title="Click to upload your professional photo">
+                            <i class="fa-solid fa-camera"></i>
+                            <span>Change Photo</span>
+                        </div>
+                        <input type="file" id="photoFileInput" accept="image/*" class="hidden-file-input">
+                    </div>
+
+                    <div class="avatar-badge">
+                        <i class="fa-solid fa-circle-check text-green"></i> Verified Developer Profile
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tech Stack Scrolling Marquee -->
+        <section class="marquee-section">
+            <div class="marquee-container">
+                <div class="marquee-content">
+                    <div class="tech-badge"><i class="fa-brands fa-html5 text-orange"></i> HTML5</div>
+                    <div class="tech-badge"><i class="fa-brands fa-css3-alt text-blue"></i> CSS3</div>
+                    <div class="tech-badge"><i class="fa-brands fa-js text-yellow"></i> JavaScript</div>
+                    <div class="tech-badge"><i class="fa-brands fa-python text-green"></i> Python</div>
+                    <div class="tech-badge"><i class="fa-solid fa-database text-purple"></i> MySQL</div>
+                    <div class="tech-badge"><i class="fa-solid fa-fire text-amber"></i> Firebase</div>
+                    <div class="tech-badge"><i class="fa-solid fa-robot text-coral"></i> AI & NLP</div>
+                    <div class="tech-badge"><i class="fa-solid fa-bolt text-cyan"></i> REST APIs</div>
+                    <div class="tech-badge"><i class="fa-solid fa-code text-coral"></i> Antigravity</div>
+                    <div class="tech-badge"><i class="fa-solid fa-brain text-purple"></i> Claude</div>
+                    <div class="tech-badge"><i class="fa-solid fa-terminal text-blue"></i> VS Code</div>
+                    <div class="tech-badge"><i class="fa-solid fa-i-cursor text-cyan"></i> Cursor</div>
+                    <div class="tech-badge"><i class="fa-brands fa-git-alt text-orange"></i> Git</div>
+                    <div class="tech-badge"><i class="fa-brands fa-github text-white"></i> GitHub</div>
+                </div>
+                <!-- Duplicate marquee content for seamless infinite scrolling loop -->
+                <div class="marquee-content" aria-hidden="true">
+                    <div class="tech-badge"><i class="fa-brands fa-html5 text-orange"></i> HTML5</div>
+                    <div class="tech-badge"><i class="fa-brands fa-css3-alt text-blue"></i> CSS3</div>
+                    <div class="tech-badge"><i class="fa-brands fa-js text-yellow"></i> JavaScript</div>
+                    <div class="tech-badge"><i class="fa-brands fa-python text-green"></i> Python</div>
+                    <div class="tech-badge"><i class="fa-solid fa-database text-purple"></i> MySQL</div>
+                    <div class="tech-badge"><i class="fa-solid fa-fire text-amber"></i> Firebase</div>
+                    <div class="tech-badge"><i class="fa-solid fa-robot text-coral"></i> AI & NLP</div>
+                    <div class="tech-badge"><i class="fa-solid fa-bolt text-cyan"></i> REST APIs</div>
+                    <div class="tech-badge"><i class="fa-solid fa-code text-coral"></i> Antigravity</div>
+                    <div class="tech-badge"><i class="fa-solid fa-brain text-purple"></i> Claude</div>
+                    <div class="tech-badge"><i class="fa-solid fa-terminal text-blue"></i> VS Code</div>
+                    <div class="tech-badge"><i class="fa-solid fa-i-cursor text-cyan"></i> Cursor</div>
+                    <div class="tech-badge"><i class="fa-brands fa-git-alt text-orange"></i> Git</div>
+                    <div class="tech-badge"><i class="fa-brands fa-github text-white"></i> GitHub</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Me Section -->
+        <section class="section about-section" id="about">
+            <div class="container">
+                <div class="section-header center">
+                    <span class="section-tag">WHO I AM</span>
+                    <h2 class="section-title">About Me <span class="dot-accent">.</span></h2>
+                    <div class="header-divider"></div>
+                </div>
+
+                <div class="about-grid">
+                    <!-- Left: Specializations Cards -->
+                    <div class="about-focus-cards">
+                        <div class="focus-card">
+                            <div class="focus-icon">
+                                <i class="fa-solid fa-laptop-code"></i>
+                            </div>
+                            <div class="focus-details">
+                                <h3>Website Development</h3>
+                                <p>Building responsive, pixel-perfect, and modern front-end interfaces using HTML5, CSS3, JavaScript, and responsive design systems.</p>
+                            </div>
+                        </div>
+
+                        <div class="focus-card">
+                            <div class="focus-icon">
+                                <i class="fa-solid fa-gears"></i>
+                            </div>
+                            <div class="focus-details">
+                                <h3>Backend & Database APIs</h3>
+                                <p>Designing robust backend services with Python, MySQL, Firebase, and REST API architectures for seamless data flow.</p>
+                            </div>
+                        </div>
+
+                        <div class="focus-card">
+                            <div class="focus-icon">
+                                <i class="fa-solid fa-robot"></i>
+                            </div>
+                            <div class="focus-details">
+                                <h3>AI & NLP Applications</h3>
+                                <p>Integrating artificial intelligence and natural language processing concepts into interactive web systems and intelligent chatbots.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Bio & Key Statistics -->
+                    <div class="about-bio-card glass-panel">
+                        <h3 class="bio-heading">Passionate Aspiring Web Developer</h3>
+                        <p class="bio-paragraph">
+                            I am a motivated Master of Computer Applications (MCA) student at Vignan Degree & PG College (2026 batch) with a strong foundation in modern web software engineering.
+                        </p>
+                        <p class="bio-paragraph">
+                            My journey includes practical project building and specialized online internship experience with the <strong>INCOIS Ocean Service Management System</strong>. I strive to solve complex real-world problems through clean code, modern UX principles, and continuous technical growth.
+                        </p>
+
+                        <div class="stats-counter-grid">
+                            <div class="stat-card">
+                                <div class="stat-number">4<span class="accent-symbol">+</span></div>
+                                <div class="stat-label">Completed Projects</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">2026</div>
+                                <div class="stat-label">MCA Expected Batch</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-number">100<span class="accent-symbol">%</span></div>
+                                <div class="stat-label">Commitment & Learning</div>
+                            </div>
+                        </div>
+
+                        <div class="bio-action">
+                            <a href="#contact" class="btn btn-coral">Let's Work Together</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technical Skills Section -->
+        <section class="section skills-section" id="skills">
+            <div class="container">
+                <div class="section-header center">
+                    <span class="section-tag">MY TECHNICAL TOOLKIT</span>
+                    <h2 class="section-title">Technical Skills <span class="dot-accent">.</span></h2>
+                    <div class="header-divider"></div>
+                </div>
+
+                <!-- Skill Filter Tabs -->
+                <div class="skills-filter-container">
+                    <button class="skill-filter-btn active" data-filter="all">All Skills</button>
+                    <button class="skill-filter-btn" data-filter="frontend">Frontend</button>
+                    <button class="skill-filter-btn" data-filter="backend">Backend & DB</button>
+                    <button class="skill-filter-btn" data-filter="ai">AI & Tools</button>
+                    <button class="skill-filter-btn" data-filter="core">Core Competencies</button>
+                </div>
+
+                <div class="skills-grid" id="skillsGrid">
+                    <!-- HTML5 -->
+                    <div class="skill-card glass-panel" data-category="frontend">
+                        <div class="skill-icon-header">
+                            <i class="fa-brands fa-html5 text-orange"></i>
+                            <span class="skill-category-tag">Frontend</span>
+                        </div>
+                        <h3 class="skill-name">HTML5</h3>
+                        <p class="skill-desc">Semantic structure, SEO tags, accessible HTML5 elements.</p>
+                        <div class="skill-level-bar">
+                            <div class="skill-progress" style="width: 90%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- CSS3 -->
+                    <div class="skill-card glass-panel" data-category="frontend">
+                        <div class="skill-icon-header">
+                            <i class="fa-brands fa-css3-alt text-blue"></i>
+                            <span class="skill-category-tag">Frontend</span>
+                        </div>
+                        <h3 class="skill-name">CSS3 & Styling</h3>
+                        <p class="skill-desc">Flexbox, Grid layouts, Animations, Glassmorphism & Custom CSS.</p>
+                        <div class="skill-level-bar">
+                            <div class="skill-progress" style="width: 85%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- JavaScript -->
+                    <div class="skill-card glass-panel" data-category="frontend">
+                        <div class="skill-icon-header">
+                            <i class="fa-brands fa-js text-yellow"></i>
+                            <span class="skill-category-tag">Frontend</span>
+                        </div>
+                        <h3 class="skill-name">JavaScript (ES6+)</h3>
+                        <p class="skill-desc">DOM manipulation, Async/Await, Promises, Dynamic UI components.</p>
+                        <div class="skill-level-bar">
+                            <div class="skill-progress" style="width: 82%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Responsive Design -->
+                    <div class="skill-card glass-panel" data-category="frontend">
+                        <div class="skill-icon-header">
+                            <i class="fa-solid fa-mobile-screen-button text-cyan"></i>
+                            <span class="skill-category-tag">Frontend</span>
+                        </div>
+                        <h3 class="skill-name">Responsive Web Design</h3>
+                        <p class="skill-desc">Mobile-first layouts, media queries, cross-browser compatibility.</p>
+                        <div class="skill-level-bar">
+                            <div class="skill-progress" style="width: 88%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Python -->
+                    <div class="skill-card glass-panel" data-category="backend">
+                        <div class="skill-icon-header">
+                            <i class="fa-brands fa-python text-green"></i>
+                            <span class="skill-category-tag">Backend</span>
+                        </div>
+                        <h3 class="skill-name">Python</h3>
+                        <p class="skill-desc">Object-oriented programming, data handling, API scripting.</p>
+                        <div class="skill-level-bar">
+                            <div class="skill-progress" style="width: 80%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- REST APIs -->
+                    <div class="skill-card glass-panel" data-category="backend">
+                        <div class="skill-icon-header">
+                            <i class="fa-solid fa-bolt text-cyan"></i>
+                            <span class="skill-category-tag">Backend</span>
+                        </div>
+                        <h3 class="skill-name">REST API Fundamentals</h3>
+                        <p class="skill-desc">JSON data exchange, HTTP methods, endpoint integration.</p>
+                        <div class="skill-level-bar">
+                            <div class="skill-progress" style="width: 85%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- MySQL -->
+                    <div class="skill-card glass-panel" data-category="backend">
+                        <div class="skill-icon-header">
+                            <i class="fa-solid fa-database text-purple"></i>
+                            <span class="skill-category-tag">Database</span>
+                        </div>
+                        <h3 class="skill-name">MySQL</h3>
+                        <p class="skill-desc">Relational database queries, table schemas, CRUD operations.</p>
+                        <div class="skill-level-bar">
+                            <div class="skill-progress" style="width: 78%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Firebase -->
+                    <div class="skill-card glass-panel" data-category="backend">
+                        <div class="skill-icon-header">
+                            <i class="fa-solid fa-fire text-amber"></i>
+                            <span class="skill-category-tag">Database</span>
+                        </div>
+                        <h3 class="skill-name">Firebase</h3>
+                        <p class="skill-desc">Realtime Database, Authentication, Cloud Storage integration.</p>
+                        <div class="skill-level-bar">
+                            <div class="skill-progress" style="width: 75%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- AI & NLP -->
+                    <div class="skill-card glass-panel" data-category="ai">
+                        <div class="skill-icon-header">
+                            <i class="fa-solid fa-robot text-coral"></i>
+                            <span class="skill-category-tag">AI / NLP</span>
+                        </div>
+                        <h3 class="skill-name">AI & NLP Development</h3>
+                        <p class="skill-desc">Conversational flow models, intent detection, healthcare AI chatbots.</p>
+                        <div class="skill-level-bar">
+                            <div class="skill-progress" style="width: 80%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Development Tools -->
+                    <div class="skill-card glass-panel" data-category="ai">
+                        <div class="skill-icon-header">
+                            <i class="fa-solid fa-toolbox text-blue"></i>
+                            <span class="skill-category-tag">Tools</span>
+                        </div>
+                        <h3 class="skill-name">Dev Tools & AI Editors</h3>
+                        <p class="skill-desc">Antigravity, Claude, VS Code, Cursor, Git, GitHub version control.</p>
+                        <div class="skill-level-bar">
+                            <div class="skill-progress" style="width: 88%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Core Competencies -->
+                    <div class="skill-card glass-panel" data-category="core">
+                        <div class="skill-icon-header">
+                            <i class="fa-solid fa-lightbulb text-yellow"></i>
+                            <span class="skill-category-tag">Core</span>
+                        </div>
+                        <h3 class="skill-name">Problem Solving & Debugging</h3>
+                        <p class="skill-desc">Analytical thinking, systematic bug fixing, code optimization.</p>
+                        <div class="skill-level-bar">
+                            <div class="skill-progress" style="width: 90%;"></div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Learning -->
+                    <div class="skill-card glass-panel" data-category="core">
+                        <div class="skill-icon-header">
+                            <i class="fa-solid fa-rocket text-green"></i>
+                            <span class="skill-category-tag">Core</span>
+                        </div>
+                        <h3 class="skill-name">Logical Thinking & Adaptability</h3>
+                        <p class="skill-desc">Fast learning curve for emerging frameworks, libraries, and AI tools.</p>
+                        <div class="skill-level-bar">
+                            <div class="skill-progress" style="width: 92%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience & Internship Section -->
+        <section class="section experience-section" id="experience">
+            <div class="container">
+                <div class="section-header center">
+                    <span class="section-tag">PRACTICAL EXPERIENCE</span>
+                    <h2 class="section-title">Work Experience <span class="dot-accent">.</span></h2>
+                    <div class="header-divider"></div>
+                </div>
+
+                <div class="timeline-wrapper">
+                    <div class="timeline-item glass-panel">
+                        <div class="timeline-badge"><i class="fa-solid fa-briefcase"></i></div>
+                        <div class="timeline-header">
+                            <div class="role-info">
+                                <h3>Online Intern</h3>
+                                <h4 class="company-name">INCOIS Ocean Service Management System</h4>
+                            </div>
+                            <span class="timeline-date"><i class="fa-regular fa-calendar"></i> Internship Duration</span>
+                        </div>
+                        <div class="timeline-body">
+                            <p>
+                                Worked as an online intern focusing on the <strong>INCOIS Ocean Service Management System</strong>. Gained hands-on practical exposure to oceanographic data display concepts, user interface workflows, and backend system coordination.
+                            </p>
+                            <ul class="timeline-bullets">
+                                <li><i class="fa-solid fa-check text-coral"></i> Assisted in analyzing ocean service management UI components for ocean data delivery.</li>
+                                <li><i class="fa-solid fa-check text-coral"></i> Learned REST API integration concepts for live data feed representation.</li>
+                                <li><i class="fa-solid fa-check text-coral"></i> Strengthened practical full-stack fundamentals and teamwork coordination.</li>
+                            </ul>
+                            <div class="timeline-tags">
+                                <span class="mini-tag">Ocean Data Systems</span>
+                                <span class="mini-tag">Web Dashboards</span>
+                                <span class="mini-tag">REST APIs</span>
+                                <span class="mini-tag">UI/UX Layouts</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Projects Showcase Section (Inspired by reference layout) -->
+        <section class="section projects-section" id="projects">
+            <div class="container">
+                <div class="section-header center">
+                    <span class="section-tag">MY WORK</span>
+                    <h2 class="section-title">Featured Projects <span class="dot-accent">.</span></h2>
+                    <div class="header-divider"></div>
+                </div>
+
+                <div class="projects-list">
+                    <!-- Project 1: Healthcare Chatbot -->
+                    <div class="project-card glass-panel">
+                        <div class="project-info">
+                            <div class="project-header-meta">
+                                <span class="project-number">01</span>
+                                <span class="project-category">AI / NLP + Web Dev</span>
+                            </div>
+                            <h3 class="project-title">AI-Based Healthcare Chatbot System</h3>
+                            
+                            <div class="project-tags">
+                                <span class="tag">HTML5</span>
+                                <span class="tag">CSS3</span>
+                                <span class="tag">JavaScript</span>
+                                <span class="tag">Python</span>
+                                <span class="tag">NLP</span>
+                            </div>
+
+                            <p class="project-description">
+                                An intelligent conversational healthcare web application designed to evaluate patient symptoms, present real-time medical insights, and provide automated assistant guidance powered by NLP algorithms.
+                            </p>
+
+                            <div class="project-actions">
+                                <button class="btn btn-coral btn-sm view-project-btn" data-project="0">
+                                    <i class="fa-solid fa-eye"></i> View Details
+                                </button>
+                                <a href="https://github.com/sasikumarsabbana-svg" target="_blank" rel="noopener" class="btn btn-outline btn-sm">
+                                    <i class="fa-brands fa-github"></i> View GitHub <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="project-preview">
+                            <div class="code-window-bar">
+                                <span class="dot dot-red"></span>
+                                <span class="dot dot-yellow"></span>
+                                <span class="dot dot-green"></span>
+                                <span class="window-title">healthcare_chatbot.py</span>
+                            </div>
+                            <img src="assets/images/project_chatbot.jpg" alt="AI Healthcare Chatbot System" class="project-img">
+                        </div>
+                    </div>
+
+                    <!-- Project 2: INCOIS Ocean System -->
+                    <div class="project-card glass-panel reverse">
+                        <div class="project-info">
+                            <div class="project-header-meta">
+                                <span class="project-number">02</span>
+                                <span class="project-category">Internship Showcase</span>
+                            </div>
+                            <h3 class="project-title">INCOIS Ocean Service Management System</h3>
+                            
+                            <div class="project-tags">
+                                <span class="tag">Web UI</span>
+                                <span class="tag">REST API</span>
+                                <span class="tag">Python</span>
+                                <span class="tag">MySQL</span>
+                            </div>
+
+                            <p class="project-description">
+                                Developed and refined during online internship, this system provides interactive ocean telemetry charts, wave height forecasting dashboards, and marine alert telemetry for maritime management.
+                            </p>
+
+                            <div class="project-actions">
+                                <button class="btn btn-coral btn-sm view-project-btn" data-project="1">
+                                    <i class="fa-solid fa-eye"></i> View Details
+                                </button>
+                                <a href="https://github.com/sasikumarsabbana-svg" target="_blank" rel="noopener" class="btn btn-outline btn-sm">
+                                    <i class="fa-brands fa-github"></i> View GitHub <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="project-preview">
+                            <div class="code-window-bar">
+                                <span class="dot dot-red"></span>
+                                <span class="dot dot-yellow"></span>
+                                <span class="dot dot-green"></span>
+                                <span class="window-title">ocean_telemetry_api.js</span>
+                            </div>
+                            <img src="assets/images/project_incois.jpg" alt="INCOIS Ocean Service Management System" class="project-img">
+                        </div>
+                    </div>
+
+                    <!-- Project 3: Personal Portfolio -->
+                    <div class="project-card glass-panel">
+                        <div class="project-info">
+                            <div class="project-header-meta">
+                                <span class="project-number">03</span>
+                                <span class="project-category">Web Application</span>
+                            </div>
+                            <h3 class="project-title">Personal Full-Stack Portfolio</h3>
+                            
+                            <div class="project-tags">
+                                <span class="tag">HTML5</span>
+                                <span class="tag">CSS3</span>
+                                <span class="tag">JavaScript</span>
+                                <span class="tag">Glassmorphism</span>
+                            </div>
+
+                            <p class="project-description">
+                                A high-performance, dark-themed responsive portfolio featuring dynamic glowing halo accents, skill filtering, live profile photo uploader, and recruiter-friendly interactive contact channels.
+                            </p>
+
+                            <div class="project-actions">
+                                <button class="btn btn-coral btn-sm view-project-btn" data-project="2">
+                                    <i class="fa-solid fa-eye"></i> View Details
+                                </button>
+                                <a href="https://github.com/sasikumarsabbana-svg" target="_blank" rel="noopener" class="btn btn-outline btn-sm">
+                                    <i class="fa-brands fa-github"></i> View GitHub <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="project-preview">
+                            <div class="code-window-bar">
+                                <span class="dot dot-red"></span>
+                                <span class="dot dot-yellow"></span>
+                                <span class="dot dot-green"></span>
+                                <span class="window-title">portfolio_v2.html</span>
+                            </div>
+                            <img src="assets/images/project_portfolio.jpg" alt="Personal Portfolio Showcase" class="project-img">
+                        </div>
+                    </div>
+
+                    <!-- Project 4: Task Manager -->
+                    <div class="project-card glass-panel reverse">
+                        <div class="project-info">
+                            <div class="project-header-meta">
+                                <span class="project-number">04</span>
+                                <span class="project-category">Full-Stack Web App</span>
+                            </div>
+                            <h3 class="project-title">Task Management Web Application</h3>
+                            
+                            <div class="project-tags">
+                                <span class="tag">JavaScript</span>
+                                <span class="tag">Firebase</span>
+                                <span class="tag">MySQL</span>
+                                <span class="tag">CRUD</span>
+                            </div>
+
+                            <p class="project-description">
+                                A feature-rich task management tool offering Kanban board organization, full CRUD database operations, priority status tagging, and real-time status updates.
+                            </p>
+
+                            <div class="project-actions">
+                                <button class="btn btn-coral btn-sm view-project-btn" data-project="3">
+                                    <i class="fa-solid fa-eye"></i> View Details
+                                </button>
+                                <a href="https://github.com/sasikumarsabbana-svg" target="_blank" rel="noopener" class="btn btn-outline btn-sm">
+                                    <i class="fa-brands fa-github"></i> View GitHub <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="project-preview">
+                            <div class="code-window-bar">
+                                <span class="dot dot-red"></span>
+                                <span class="dot dot-yellow"></span>
+                                <span class="dot dot-green"></span>
+                                <span class="window-title">task_crud_service.js</span>
+                            </div>
+                            <img src="assets/images/project_taskmanager.jpg" alt="Task Management Application" class="project-img">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Education Section -->
+        <section class="section education-section" id="education">
+            <div class="container">
+                <div class="section-header center">
+                    <span class="section-tag">ACADEMIC BACKGROUND</span>
+                    <h2 class="section-title">Education <span class="dot-accent">.</span></h2>
+                    <div class="header-divider"></div>
+                </div>
+
+                <div class="education-grid">
+                    <div class="education-card glass-panel">
+                        <div class="edu-icon">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                        </div>
+                        <div class="edu-content">
+                            <span class="edu-year"><i class="fa-regular fa-calendar"></i> 2024 — 2026 (Expected)</span>
+                            <h3 class="edu-degree">Master of Computer Applications (MCA)</h3>
+                            <h4 class="edu-institution"><i class="fa-solid fa-building-columns text-coral"></i> Vignan Degree & PG College</h4>
+                            <p class="edu-desc">
+                                Specialized in Computer Science fundamentals, Software Engineering, Object-Oriented System Design, Web Technologies, Database Management Systems, and AI algorithm implementation.
+                            </p>
+                            <div class="edu-tags">
+                                <span class="mini-tag">Software Engineering</span>
+                                <span class="mini-tag">Web Technologies</span>
+                                <span class="mini-tag">DBMS & SQL</span>
+                                <span class="mini-tag">Data Structures</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Languages & Hobbies Section -->
+        <section class="section info-grid-section">
+            <div class="container">
+                <div class="grid-2-col">
+                    <!-- Languages Box -->
+                    <div class="info-box glass-panel">
+                        <div class="box-header">
+                            <i class="fa-solid fa-language box-icon text-cyan"></i>
+                            <h3>Languages Known</h3>
+                        </div>
+                        <div class="languages-list">
+                            <div class="language-item">
+                                <div class="lang-meta">
+                                    <span class="lang-name">English</span>
+                                    <span class="lang-level">Professional / Technical</span>
+                                </div>
+                                <div class="lang-bar"><div class="lang-fill" style="width: 88%;"></div></div>
+                            </div>
+                            <div class="language-item">
+                                <div class="lang-meta">
+                                    <span class="lang-name">Telugu</span>
+                                    <span class="lang-level">Native / Fluent</span>
+                                </div>
+                                <div class="lang-bar"><div class="lang-fill" style="width: 100%;"></div></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Hobbies & Interests Box -->
+                    <div class="info-box glass-panel">
+                        <div class="box-header">
+                            <i class="fa-solid fa-heart box-icon text-coral"></i>
+                            <h3>Hobbies & Interests</h3>
+                        </div>
+                        <div class="hobbies-grid">
+                            <div class="hobby-chip">
+                                <i class="fa-solid fa-code text-cyan"></i>
+                                <span>Web Development & Tech</span>
+                            </div>
+                            <div class="hobby-chip">
+                                <i class="fa-solid fa-brain text-purple"></i>
+                                <span>Exploring AI & Emerging Tech</span>
+                            </div>
+                            <div class="hobby-chip">
+                                <i class="fa-solid fa-volleyball text-orange"></i>
+                                <span>Playing Volleyball 🏐</span>
+                            </div>
+                            <div class="hobby-chip">
+                                <i class="fa-solid fa-baseball-bat-ball text-yellow"></i>
+                                <span>Playing Cricket 🏏</span>
+                            </div>
+                            <div class="hobby-chip">
+                                <i class="fa-solid fa-podcast text-pink"></i>
+                                <span>Listening to Podcasts 🎧</span>
+                            </div>
+                            <div class="hobby-chip">
+                                <i class="fa-solid fa-lightbulb text-green"></i>
+                                <span>Continuous Learning 💡</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact & Connect Section (Inspired by bottom area of reference image) -->
+        <section class="section contact-section" id="contact">
+            <div class="container">
+                <div class="contact-card-container glass-panel">
+                    <div class="contact-grid">
+                        <!-- Contact Left Info -->
+                        <div class="contact-info">
+                            <span class="section-tag">CONTACTS</span>
+                            <h2 class="contact-headline">Have a project? <br>Let's talk!</h2>
+                            <p class="contact-subtext">
+                                I am actively seeking full-time developer roles, internships, and collaborative software projects. Feel free to send me a message or connect directly!
+                            </p>
+
+                            <div class="contact-details-list">
+                                <div class="detail-item">
+                                    <div class="detail-icon"><i class="fa-solid fa-envelope"></i></div>
+                                    <div class="detail-text">
+                                        <span class="detail-label">Email Me</span>
+                                        <a href="mailto:sasikumarsabbana@gmail.com" class="detail-value">sasikumarsabbana@gmail.com</a>
+                                    </div>
+                                </div>
+
+                                <div class="detail-item">
+                                    <div class="detail-icon"><i class="fa-brands fa-github"></i></div>
+                                    <div class="detail-text">
+                                        <span class="detail-label">GitHub Profile</span>
+                                        <a href="https://github.com/sasikumarsabbana-svg" target="_blank" rel="noopener" class="detail-value">github.com/sasikumarsabbana-svg</a>
+                                    </div>
+                                </div>
+
+                                <div class="detail-item">
+                                    <div class="detail-icon"><i class="fa-brands fa-linkedin"></i></div>
+                                    <div class="detail-text">
+                                        <span class="detail-label">LinkedIn</span>
+                                        <a href="https://linkedin.com" target="_blank" rel="noopener" class="detail-value">Sabbana Sasikumar</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Contact Right Form -->
+                        <div class="contact-form-wrapper">
+                            <form id="contactForm" class="contact-form">
+                                <div class="form-group">
+                                    <label for="userName">Name</label>
+                                    <input type="text" id="userName" name="name" class="form-input" placeholder="Your Full Name" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="userEmail">Email</label>
+                                    <input type="email" id="userEmail" name="email" class="form-input" placeholder="name@example.com" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="userSubject">Subject</label>
+                                    <input type="text" id="userSubject" name="subject" class="form-input" placeholder="Job Opportunity / Project Request" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="userMessage">Message</label>
+                                    <textarea id="userMessage" name="message" class="form-input textarea" rows="4" placeholder="Hello Sasikumar, I'd like to discuss..." required></textarea>
+                                </div>
+
+                                <button type="submit" class="btn btn-coral btn-block" id="submitFormBtn">
+                                    <span>Submit Message</span> <i class="fa-solid fa-paper-plane"></i>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <a href="#home" class="nav-logo">
+                    <span class="logo-name">Sabbana Sasikumar</span>
+                    <span class="logo-dot">.</span>
+                </a>
+                <p>Aspiring Full-Stack Developer • Building Ideas & Solutions</p>
+            </div>
+
+            <div class="footer-links">
+                <a href="#home">Home</a>
+                <a href="#about">About</a>
+                <a href="#skills">Skills</a>
+                <a href="#projects">Projects</a>
+                <a href="#contact">Contact</a>
+            </div>
+
+            <div class="footer-socials">
+                <a href="mailto:sasikumarsabbana@gmail.com" title="Email"><i class="fa-solid fa-envelope"></i></a>
+                <a href="https://github.com/sasikumarsabbana-svg" target="_blank" rel="noopener" title="GitHub"><i class="fa-brands fa-github"></i></a>
+                <a href="https://linkedin.com" target="_blank" rel="noopener" title="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>Designed with <i class="fa-solid fa-heart text-coral"></i> for Sabbana Sasikumar. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Project Details Modal -->
+    <div class="modal-backdrop" id="projectModal">
+        <div class="modal-box glass-panel">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <div class="modal-content" id="modalContent">
+                <!-- Content injected dynamically via JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Resume View Modal -->
+    <div class="modal-backdrop" id="resumeModal">
+        <div class="modal-box glass-panel resume-modal-box">
+            <button class="modal-close" id="resumeModalClose">&times;</button>
+            <div class="resume-preview-container">
+                <div class="resume-header">
+                    <h2>Sabbana Sasikumar</h2>
+                    <p>Aspiring Full-Stack Developer | MCA 2026 Batch</p>
+                    <div class="resume-contacts">
+                        <span><i class="fa-solid fa-envelope"></i> sasikumarsabbana@gmail.com</span>
+                        <span><i class="fa-brands fa-github"></i> github.com/sasikumarsabbana-svg</span>
+                    </div>
+                </div>
+                <div class="resume-body">
+                    <section class="resume-sec">
+                        <h3>Profile Summary</h3>
+                        <p>Passionate web developer focused on building modern, responsive web applications. Interested in frontend, backend APIs, AI/NLP, and database solutions.</p>
+                    </section>
+                    <section class="resume-sec">
+                        <h3>Education</h3>
+                        <p><strong>Master of Computer Applications (MCA)</strong> — Vignan Degree & PG College (2024-2026)</p>
+                    </section>
+                    <section class="resume-sec">
+                        <h3>Experience</h3>
+                        <p><strong>Online Intern</strong> — INCOIS Ocean Service Management System</p>
+                    </section>
+                    <section class="resume-sec">
+                        <h3>Key Projects</h3>
+                        <ul>
+                            <li>AI-Based Healthcare Chatbot System</li>
+                            <li>INCOIS Ocean Service Management System</li>
+                            <li>Personal Full-Stack Portfolio</li>
+                            <li>Task Management Web Application</li>
+                        </ul>
+                    </section>
+                    <section class="resume-sec">
+                        <h3>Skills & Tools</h3>
+                        <p>HTML5, CSS3, JavaScript, Python, REST APIs, MySQL, Firebase, Antigravity, Claude, VS Code, Cursor, Git, GitHub.</p>
+                    </section>
+                </div>
+                <div class="resume-actions">
+                    <button class="btn btn-coral" id="downloadResumeAction"><i class="fa-solid fa-download"></i> Save / Print Resume</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div class="toast-notification" id="toast">
+        <div class="toast-icon"><i class="fa-solid fa-circle-check"></i></div>
+        <div class="toast-message" id="toastMsg">Action completed successfully!</div>
+    </div>
+
+    <!-- Custom JS -->
+    <script src="script.js"></script>
+</body>
+</html>
