@@ -82,10 +82,24 @@ app.get('*', (req, res) => {
 });
 
 // Start the server
-app.listen(PORT, HOST, () => {
+const server = app.listen(PORT, HOST, () => {
   console.log(`=======================================================`);
   console.log(`  Operational Ocean Services Knowledge Repository API  `);
   console.log(`  Local: http://localhost:${PORT}  `);
   console.log(`  Network: http://0.0.0.0:${PORT}  `);
   console.log(`=======================================================`);
 });
+
+server.on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.error(`\n[ERROR] Port ${PORT} is already in use by another process.`);
+    console.error(`To resolve this:`);
+    console.error(`1. Stop the running process on port ${PORT}, or`);
+    console.error(`2. Run on another port using: PORT=${Number(PORT) + 1} npm start\n`);
+  } else {
+    console.error('Server startup error:', err);
+  }
+  process.exit(1);
+});
+
+module.exports = server;

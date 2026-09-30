@@ -52,12 +52,19 @@ async function logActivity(userId, action, referenceId) {
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
   
-  if (!email || !password) {
-    return res.status(400).json({ error: 'Email and password are required' });
+  if (!email || !password || typeof email !== 'string' || typeof password !== 'string' || !email.trim() || !password.trim()) {
+    return res.status(400).json({ error: 'Department email and password are required' });
   }
 
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email.trim())) {
+    return res.status(400).json({ error: 'Please provide a valid email address format' });
+  }
+
+  const trimmedEmail = email.trim().toLowerCase();
+
   try {
-    const [rows] = await db.query('SELECT * FROM users WHERE email = ? LIMIT 1', [email]);
+    const [rows] = await db.query('SELECT * FROM users WHERE email = ? LIMIT 1', [trimmedEmail]);
     const user = rows[0];
 
     let isValid = user ? bcrypt.compareSync(password, user.password) : false;
@@ -69,7 +76,7 @@ router.post('/login', async (req, res) => {
     }
 
     if (!user || !isValid) {
-      return res.status(401).json({ error: 'Invalid email or password' });
+      return res.status(401).json({ error: 'Invalid departmental email or password' });
     }
 
     const token = generateToken();
@@ -91,7 +98,7 @@ router.post('/login', async (req, res) => {
     });
   } catch (err) {
     console.error('Login error:', err);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: 'Unable to connect to the authentication service. Please try again.' });
   }
 });
 

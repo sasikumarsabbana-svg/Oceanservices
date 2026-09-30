@@ -56,7 +56,11 @@ router.get('/', requireAuth, async (req, res) => {
     let filtered = [...sops];
     if (search) {
       const searchLower = search.toLowerCase();
-      filtered = filtered.filter(s => s.title && s.title.toLowerCase().includes(searchLower));
+      filtered = filtered.filter(s => 
+        (s.title && s.title.toLowerCase().includes(searchLower)) ||
+        (s.service_name && s.service_name.toLowerCase().includes(searchLower)) ||
+        (s.category_name && s.category_name.toLowerCase().includes(searchLower))
+      );
     }
 
     // Sort by created_at DESC
@@ -65,7 +69,7 @@ router.get('/', requireAuth, async (req, res) => {
     res.json(filtered);
   } catch (err) {
     console.error('Fetch SOPs error:', err);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: 'Unable to fetch SOP records. Please try again.' });
   }
 });
 

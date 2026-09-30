@@ -408,17 +408,20 @@
             <div class="filter-controls glass-panel">
               <div class="search-box">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="sop-search-input" placeholder="Search SOPs by title...">
+                <input type="text" id="sop-search-input" placeholder="Search SOPs by title, service, category..." aria-label="Search SOPs">
               </div>
               <div class="dropdown-filters">
-                <select id="sop-filter-service" class="form-control">
+                <select id="sop-filter-service" class="form-control" aria-label="Filter SOPs by Ocean Service">
                   <option value="">All Ocean Services</option>
                 </select>
-                <select id="sop-filter-category" class="form-control">
+                <select id="sop-filter-category" class="form-control" aria-label="Filter SOPs by Category">
                   <option value="">All Categories</option>
                 </select>
-                <input type="date" id="sop-filter-date" class="form-control" title="Filter by creation date"
-                  style="min-width:150px;">
+                <input type="date" id="sop-filter-date" class="form-control" title="Filter by creation date" aria-label="Filter by creation date"
+                  style="min-width:140px;">
+                <button id="btn-reset-sop-filters" class="btn btn-secondary btn-sm" title="Clear all filters" type="button">
+                  <i class="fa-solid fa-rotate-left"></i> Reset
+                </button>
               </div>
             </div>
             <!-- Add SOP trigger & Export -->
@@ -464,22 +467,25 @@
             <div class="filter-controls glass-panel">
               <div class="search-box">
                 <i class="fa-solid fa-magnifying-glass"></i>
-                <input type="text" id="doc-search-input" placeholder="Search reports by title, tags...">
+                <input type="text" id="doc-search-input" placeholder="Search reports by title, tags, service..." aria-label="Search media assets">
               </div>
               <div class="dropdown-filters">
-                <select id="doc-filter-service" class="form-control">
+                <select id="doc-filter-service" class="form-control" aria-label="Filter by Ocean Service">
                   <option value="">All Services</option>
                 </select>
-                <select id="doc-filter-category" class="form-control">
+                <select id="doc-filter-category" class="form-control" aria-label="Filter by Category">
                   <option value="">All Categories</option>
                 </select>
-                <select id="doc-filter-type" class="form-control">
+                <select id="doc-filter-type" class="form-control" aria-label="Filter by format">
                   <option value="">All Formats</option>
                   <option value="PDF">PDF Documents</option>
                   <option value="VIDEO">Videos</option>
                 </select>
-                <input type="date" id="doc-filter-date" class="form-control" title="Filter by upload date"
-                  style="min-width:150px;">
+                <input type="date" id="doc-filter-date" class="form-control" title="Filter by upload date" aria-label="Filter by upload date"
+                  style="min-width:140px;">
+                <button id="btn-reset-doc-filters" class="btn btn-secondary btn-sm" title="Clear all filters" type="button">
+                  <i class="fa-solid fa-rotate-left"></i> Reset
+                </button>
               </div>
             </div>
             <!-- Add Document trigger & Export -->
@@ -518,7 +524,13 @@
 
         <!-- =================== USER MANAGEMENT SCREEN =================== -->
         <section id="screen-users" class="screen-view">
-          <div class="action-bar-layout justify-end">
+          <div class="action-bar-layout">
+            <div class="filter-controls glass-panel" style="max-width: 450px;">
+              <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="user-search-input" placeholder="Filter users by name, email, or role..." aria-label="Filter users">
+              </div>
+            </div>
             <button id="btn-add-user-modal" class="btn btn-primary">
               <i class="fa-solid fa-user-plus"></i> Register New User
             </button>
@@ -553,15 +565,22 @@
 
         <!-- =================== AUDIT TRAIL SCREEN =================== -->
         <section id="screen-logs" class="screen-view">
-          <div class="table-card glass-panel">
-            <div class="card-header-flex" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-              <div>
-                <h3>System Activity Logs</h3>
-                <p class="text-muted">Real-time audit trailing of system changes, uploads, downloads, and edits</p>
+          <div class="action-bar-layout">
+            <div class="filter-controls glass-panel" style="max-width: 450px;">
+              <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="log-search-input" placeholder="Search audit logs by action, user, or ref ID..." aria-label="Search logs">
               </div>
-              <button id="btn-export-logs-csv" class="btn btn-secondary">
-                <i class="fa-solid fa-file-csv"></i> Export Audit Logs (CSV)
-              </button>
+            </div>
+            <button id="btn-export-logs-csv" class="btn btn-secondary">
+              <i class="fa-solid fa-file-csv"></i> Export Audit Logs (CSV)
+            </button>
+          </div>
+
+          <div class="table-card glass-panel">
+            <div class="table-header-title">
+              <h3>System Activity Logs</h3>
+              <p class="text-muted">Real-time audit trailing of system changes, uploads, downloads, and logins</p>
             </div>
             <div class="table-wrapper">
               <table class="data-table">

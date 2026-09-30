@@ -69,7 +69,9 @@ router.get('/', requireAuth, async (req, res) => {
       filtered = filtered.filter(d => 
         (d.title && d.title.toLowerCase().includes(searchLower)) ||
         (d.description && d.description.toLowerCase().includes(searchLower)) ||
-        (d.tags && d.tags.toLowerCase().includes(searchLower))
+        (d.tags && d.tags.toLowerCase().includes(searchLower)) ||
+        (d.service_name && d.service_name.toLowerCase().includes(searchLower)) ||
+        (d.category_name && d.category_name.toLowerCase().includes(searchLower))
       );
     }
 
@@ -79,7 +81,7 @@ router.get('/', requireAuth, async (req, res) => {
     res.json(filtered);
   } catch (err) {
     console.error('Fetch documents error:', err);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: 'Unable to fetch media assets. Please try again.' });
   }
 });
 

@@ -9,6 +9,8 @@ let currentUser = null;
 // Global Cached Data to optimize filter loadings
 let cachedServices = [];
 let cachedCategories = [];
+let cachedUsers = [];
+let cachedLogs = [];
 
 // ==========================================================================
 // BOOTSTRAP & INITIALIZATION
@@ -65,14 +67,12 @@ async function checkAuthentication() {
       currentUser = data.user;
       initializeApplication();
     } else {
-      // Session invalid or expired
-      logout();
+      // Session invalid or expired - quiet logout without intrusive toasts
+      logoutQuietly();
     }
   } catch (err) {
     console.error('Session validation error:', err);
-    showToast('Failed to connect to authentication server. Operating in offline/cached view.', 'error', { reload: true });
-    // Clear token as fallback
-    logout();
+    logoutQuietly();
   }
 }
 
@@ -231,12 +231,18 @@ function setupEventListeners() {
   document.getElementById('sop-filter-service').addEventListener('change', loadSOPs);
   document.getElementById('sop-filter-category').addEventListener('change', loadSOPs);
   document.getElementById('sop-filter-date').addEventListener('change', loadSOPs);
+  document.getElementById('btn-reset-sop-filters')?.addEventListener('click', resetSopFilters);
 
   document.getElementById('doc-search-input').addEventListener('input', debounce(loadDocuments, 300));
   document.getElementById('doc-filter-service').addEventListener('change', loadDocuments);
   document.getElementById('doc-filter-category').addEventListener('change', loadDocuments);
   document.getElementById('doc-filter-type').addEventListener('change', loadDocuments);
   document.getElementById('doc-filter-date').addEventListener('change', loadDocuments);
+  document.getElementById('btn-reset-doc-filters')?.addEventListener('click', resetDocFilters);
+
+  // User & Log search listeners
+  document.getElementById('user-search-input')?.addEventListener('input', debounce(renderFilteredUsers, 250));
+  document.getElementById('log-search-input')?.addEventListener('input', debounce(renderFilteredLogs, 250));
 
   // Visual file name changes for drop zones
   document.getElementById('version-file').addEventListener('change', (e) => {
@@ -275,11 +281,33 @@ function setupEventListeners() {
   document.getElementById('header-date').innerText = new Date().toLocaleDateString('en-US', options);
 }
 
+// Reset SOP filters helper
+function resetSopFilters() {
+  document.getElementById('sop-search-input').value = '';
+  document.getElementById('sop-filter-service').value = '';
+  document.getElementById('sop-filter-category').value = '';
+  document.getElementById('sop-filter-date').value = '';
+  loadSOPs();
+}
+
+// Reset Document filters helper
+function resetDocFilters() {
+  document.getElementById('doc-search-input').value = '';
+  document.getElementById('doc-filter-service').value = '';
+  document.getElementById('doc-filter-category').value = '';
+  document.getElementById('doc-filter-type').value = '';
+  document.getElementById('doc-filter-date').value = '';
+  loadDocuments();
+}
+
 // Setup automatic modal closer utility
 function setupModalCloser(btnId, modalId) {
-  document.getElementById(btnId).addEventListener('click', () => {
-    closeModal(modalId);
-  });
+  const btn = document.getElementById(btnId);
+  if (btn) {
+    btn.addEventListener('click', () => {
+      closeModal(modalId);
+    });
+  }
 }
 
 // Navigation router
@@ -340,6 +368,17 @@ function navigateToScreen(screenName) {
   }
 }
 
+// Helper to show/hide full screens
+function showScreen(screenId) {
+  if (screenId === 'login-screen') {
+    document.getElementById('app-container').classList.remove('active-app');
+    document.getElementById('login-screen').classList.add('active-screen');
+  } else {
+    document.getElementById('login-screen').classList.remove('active-screen');
+    document.getElementById('app-container').classList.add('active-app');
+  }
+}
+
 // ==========================================================================
 // REQUEST ROUTING MIDDLEWARES (AUTHENTICATED AJAX)
 // ==========================================================================
@@ -361,6 +400,14 @@ async function fetchWithAuth(url, options = {}) {
   return res;
 }
 
+// Quiet logout (no alerts, clean transition)
+function logoutQuietly() {
+  localStorage.removeItem('auth_token');
+  token = null;
+  currentUser = null;
+  showScreen('login-screen');
+}
+
 // Logout handler
 async function logout() {
   if (token) {
@@ -370,7 +417,7 @@ async function logout() {
         headers: { 'Authorization': `Bearer ${token}` }
       });
     } catch (e) {
-      console.log('Logout API connection error');
+      console.log('Logout API connection notice');
     }
   }
 
@@ -379,15 +426,56 @@ async function logout() {
   currentUser = null;
 
   // Toggle screens
-  document.getElementById('app-container').classList.remove('active-app');
-  document.getElementById('login-screen').classList.add('active-screen');
+  showScreen('login-screen');
+  showToast('Logged out successfully.', 'info');
 }
 
-// Handle Login Submission
+// Helper to manage button loading states
+function setButtonLoading(btn, isLoading, loadingText = 'Processing...') {
+  if (!btn) return;
+  if (isLoading) {
+    btn.disabled = true;
+    btn.dataset.origHtml = btn.innerHTML;
+    btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> ${loadingText}`;
+  } else {
+    btn.disabled = false;
+    if (btn.dataset.origHtml) {
+      btn.innerHTML = btn.dataset.origHtml;
+    }
+  }
+}
+
+// Handle Login Submission with validation
 async function handleLoginSubmit(e) {
   e.preventDefault();
-  const email = document.getElementById('login-email').value;
-  const password = document.getElementById('login-password').value;
+  const emailInput = document.getElementById('login-email');
+  const passwordInput = document.getElementById('login-password');
+  const submitBtn = e.target.querySelector('button[type="submit"]');
+
+  const email = (emailInput.value || '').trim();
+  const password = passwordInput.value || '';
+
+  // Client-side validation
+  if (!email) {
+    showToast('Please enter your email address.', 'error');
+    emailInput.focus();
+    return;
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    showToast('Please enter a valid email address.', 'error');
+    emailInput.focus();
+    return;
+  }
+
+  if (!password) {
+    showToast('Please enter your password.', 'error');
+    passwordInput.focus();
+    return;
+  }
+
+  setButtonLoading(submitBtn, true, 'Authenticating...');
 
   try {
     const res = await fetch(`${API_BASE}/auth/login`, {
@@ -398,7 +486,8 @@ async function handleLoginSubmit(e) {
 
     const contentType = res.headers.get('content-type');
     if (!contentType || !contentType.includes('application/json')) {
-      showToast('Backend API not reachable on static host. Please deploy Node.js backend (e.g. Render) or configure proxy.', 'error');
+      showToast('Unable to connect to the service. Please try again.', 'error');
+      setButtonLoading(submitBtn, false);
       return;
     }
 
@@ -411,11 +500,15 @@ async function handleLoginSubmit(e) {
       showToast('Authentication Successful!', 'success');
       initializeApplication();
     } else {
-      showToast(data.error || 'Authentication Failed', 'error');
+      showToast(data.error || 'Invalid credentials. Please try again.', 'error');
+      passwordInput.value = '';
+      passwordInput.focus();
     }
   } catch (err) {
     console.error('Login error:', err);
-    showToast('Failed to connect to authentication server.', 'error');
+    showToast('Unable to connect to the authentication service. Please check your network and try again.', 'error');
+  } finally {
+    setButtonLoading(submitBtn, false);
   }
 }
 
@@ -444,7 +537,13 @@ async function loadDashboard() {
     progressContainer.innerHTML = '';
 
     if (data.distribution.length === 0) {
-      progressContainer.innerHTML = `<p class="text-center text-muted">No operational services mapped yet.</p>`;
+      progressContainer.innerHTML = `
+        <div class="empty-state-card" style="padding: 24px;">
+          <i class="fa-solid fa-chart-pie"></i>
+          <h4>No operational services mapped yet</h4>
+          <p>Add services in the Service Directory to start tracking distribution.</p>
+        </div>
+      `;
     } else {
       // Sort distribution descending
       data.distribution.sort((a, b) => b.count - a.count);
@@ -467,7 +566,7 @@ async function loadDashboard() {
         const labels = document.createElement('div');
         labels.className = 'progress-labels';
         labels.innerHTML = `
-          <span class="service-name">${dist.name}</span>
+          <span class="service-name">${escapeHtml(dist.name)}</span>
           <span class="asset-count">${dist.count} asset(s)</span>
         `;
 
@@ -488,7 +587,7 @@ async function loadDashboard() {
         // Staggered animation for fills
         setTimeout(() => {
           fill.style.width = percentage + '%';
-        }, 150 * idx);
+        }, 120 * idx);
       });
     }
 
@@ -497,7 +596,17 @@ async function loadDashboard() {
     recentBody.innerHTML = '';
 
     if (data.recentUploads.length === 0) {
-      recentBody.innerHTML = `<tr><td colspan="4" class="text-center text-muted">No releases recorded yet.</td></tr>`;
+      recentBody.innerHTML = `
+        <tr>
+          <td colspan="4">
+            <div class="empty-state-card" style="padding: 20px;">
+              <i class="fa-solid fa-inbox"></i>
+              <h4>No releases recorded yet</h4>
+              <p>Uploaded SOPs and Media publications will appear here.</p>
+            </div>
+          </td>
+        </tr>
+      `;
     } else {
       data.recentUploads.forEach(asset => {
         const tr = document.createElement('tr');
@@ -514,8 +623,8 @@ async function loadDashboard() {
 
         tr.innerHTML = `
           <td><strong>${escapeHtml(asset.title)}</strong></td>
-          <td><span class="badge ${badgeClass}">${asset.type}</span></td>
-          <td>${asset.source}</td>
+          <td><span class="badge ${badgeClass}">${escapeHtml(asset.type)}</span></td>
+          <td>${escapeHtml(asset.source)}</td>
           <td>${formattedDate}</td>
         `;
         recentBody.appendChild(tr);
@@ -530,10 +639,20 @@ async function loadDashboard() {
 // SCREEN 2: SOP LIFECYCLE LOADER & FLOW
 // ==========================================================================
 async function loadSOPs() {
-  const search = document.getElementById('sop-search-input').value;
+  const search = (document.getElementById('sop-search-input').value || '').trim();
   const serviceId = document.getElementById('sop-filter-service').value;
   const categoryId = document.getElementById('sop-filter-category').value;
   const dateVal = document.getElementById('sop-filter-date').value;
+
+  const tbody = document.getElementById('sop-list');
+  tbody.innerHTML = `
+    <tr>
+      <td colspan="7" class="text-center" style="padding: 30px;">
+        <i class="fa-solid fa-spinner fa-spin" style="font-size: 20px; color: var(--primary-cyan); margin-bottom: 8px;"></i>
+        <div class="text-muted">Loading SOP records...</div>
+      </td>
+    </tr>
+  `;
 
   try {
     let url = `/sops`;
@@ -555,11 +674,39 @@ async function loadSOPs() {
       sops = sops.filter(s => s.created_at && s.created_at.startsWith(dateVal));
     }
 
-    const tbody = document.getElementById('sop-list');
     tbody.innerHTML = '';
 
+    const hasActiveFilters = Boolean(search || serviceId || categoryId || dateVal);
+
     if (sops.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="7" class="text-center text-muted">No SOP records found. Try adjusting filters or create a new SOP.</td></tr>`;
+      if (hasActiveFilters) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7">
+              <div class="empty-state-card">
+                <i class="fa-solid fa-filter-circle-xmark"></i>
+                <h4>No matching SOP records found</h4>
+                <p>No standard operating procedures matched your filter or search criteria.</p>
+                <button class="btn btn-secondary" onclick="resetSopFilters()">
+                  <i class="fa-solid fa-rotate-left"></i> Reset Filters
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      } else {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="7">
+              <div class="empty-state-card">
+                <i class="fa-solid fa-book-open"></i>
+                <h4>No SOP records available</h4>
+                <p>Create your first Standard Operating Procedure to get started.</p>
+              </div>
+            </td>
+          </tr>
+        `;
+      }
       return;
     }
 
@@ -568,9 +715,14 @@ async function loadSOPs() {
       const tr = document.createElement('tr');
 
       // Fetch latest version info
-      const verRes = await fetchWithAuth(`/sops/${sop.id}/versions`);
-      const versions = await verRes.json();
-      const latestVer = versions[0]; // ordered desc, so first is latest
+      let latestVer = null;
+      try {
+        const verRes = await fetchWithAuth(`/sops/${sop.id}/versions`);
+        const versions = await verRes.json();
+        latestVer = versions && versions.length > 0 ? versions[0] : null;
+      } catch (e) {
+        console.error('Error fetching version for SOP:', sop.id);
+      }
 
       const formattedDate = new Date(sop.created_at).toLocaleDateString('en-US', {
         month: 'short',
@@ -598,8 +750,8 @@ async function loadSOPs() {
 
       tr.innerHTML = `
         <td><strong>${escapeHtml(sop.title)}</strong></td>
-        <td>${sop.service_name}</td>
-        <td>${sop.category_name}</td>
+        <td>${escapeHtml(sop.service_name || 'General')}</td>
+        <td>${escapeHtml(sop.category_name || 'General')}</td>
         <td>${formattedDate}</td>
         <td><span class="text-muted">${verText}</span></td>
         <td><span class="badge ${statusBadge}">${statusText}</span></td>
@@ -613,15 +765,43 @@ async function loadSOPs() {
     }
   } catch (err) {
     console.error('Error loading SOPs list:', err);
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="7">
+          <div class="empty-state-card">
+            <i class="fa-solid fa-triangle-exclamation" style="color: var(--status-critical);"></i>
+            <h4>Unable to load SOP records</h4>
+            <p>Please check your connection and try again.</p>
+            <button class="btn btn-secondary" onclick="loadSOPs()"><i class="fa-solid fa-rotate"></i> Retry</button>
+          </div>
+        </td>
+      </tr>
+    `;
   }
 }
 
 // Master SOP Creation Form Submission
 async function handleCreateSop(e) {
   e.preventDefault();
-  const title = document.getElementById('sop-title').value;
+  const submitBtn = e.target.querySelector('button[type="submit"]');
+  const title = document.getElementById('sop-title').value.trim();
   const service_id = document.getElementById('sop-service').value;
   const category_id = document.getElementById('sop-category').value;
+
+  if (!title) {
+    showToast('Please enter an SOP title.', 'error');
+    return;
+  }
+  if (!service_id) {
+    showToast('Please select an Ocean Service.', 'error');
+    return;
+  }
+  if (!category_id) {
+    showToast('Please select a Category.', 'error');
+    return;
+  }
+
+  setButtonLoading(submitBtn, true, 'Creating SOP...');
 
   try {
     const res = await fetchWithAuth('/sops', {
@@ -641,7 +821,9 @@ async function handleCreateSop(e) {
     }
   } catch (err) {
     console.error(err);
-    showToast('Connection error during SOP creation.', 'error', { reload: true });
+    showToast('Connection error during SOP creation.', 'error');
+  } finally {
+    setButtonLoading(submitBtn, false);
   }
 }
 
@@ -670,7 +852,17 @@ async function loadSopVersions(sopId) {
     tbody.innerHTML = '';
 
     if (versions.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="5" class="text-center text-muted">No historical releases available.</td></tr>`;
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="5">
+            <div class="empty-state-card" style="padding: 20px;">
+              <i class="fa-solid fa-code-branch"></i>
+              <h4>No historical releases available</h4>
+              <p>Upload a new PDF version above to create the initial release.</p>
+            </div>
+          </td>
+        </tr>
+      `;
       return;
     }
 
@@ -685,7 +877,7 @@ async function loadSopVersions(sopId) {
       const badgeClass = v.status === 'Approved' ? 'badge-approved' : 'badge-draft';
 
       let adminActions = '';
-      if (currentUser.role === 'Admin') {
+      if (currentUser && currentUser.role === 'Admin') {
         const toggleBtnText = v.status === 'Approved' ? 'Revert to Draft' : 'Approve & Publish';
         const toggleClass = v.status === 'Approved' ? 'btn-secondary' : 'btn-primary';
         const newStatus = v.status === 'Approved' ? 'Draft' : 'Approved';
@@ -702,7 +894,7 @@ async function loadSopVersions(sopId) {
         <td>${date}</td>
         <td><span class="badge ${badgeClass}">${v.status}</span></td>
         <td>
-          <button class="btn btn-secondary btn-icon" style="width:26px; height:26px;" onclick="previewPdf('${v.file_path}', 'Version ${v.version_no}')">
+          <button class="btn btn-secondary btn-icon" style="width:26px; height:26px;" onclick="previewPdf('${v.file_path}', 'Version ${v.version_no}')" title="Preview PDF">
             <i class="fa-solid fa-file-pdf"></i>
           </button>
         </td>
@@ -712,7 +904,7 @@ async function loadSopVersions(sopId) {
     });
 
     // Refresh UI elements visibility for admin columns
-    if (currentUser.role === 'Admin') {
+    if (currentUser && currentUser.role === 'Admin') {
       document.querySelectorAll('.admin-only').forEach(el => el.style.display = '');
     } else {
       document.querySelectorAll('.admin-only').forEach(el => el.style.display = 'none');
@@ -725,20 +917,34 @@ async function loadSopVersions(sopId) {
 // Upload Version Handler
 async function handleUploadVersion(e) {
   e.preventDefault();
+  const submitBtn = e.target.querySelector('button[type="submit"]');
   const sopId = document.getElementById('version-sop-id').value;
-  const versionNo = document.getElementById('version-number').value;
+  const versionNo = document.getElementById('version-number').value.trim();
   const status = document.getElementById('version-status').value;
   const fileInput = document.getElementById('version-file');
+
+  if (!versionNo) {
+    showToast('Please specify a version number.', 'error');
+    return;
+  }
 
   if (fileInput.files.length === 0) {
     showToast('Please select a PDF file first.', 'error');
     return;
   }
 
+  const file = fileInput.files[0];
+  if (!file.name.toLowerCase().endsWith('.pdf') && file.type !== 'application/pdf') {
+    showToast('Only PDF document files (.pdf) are permitted.', 'error');
+    return;
+  }
+
+  setButtonLoading(submitBtn, true, 'Uploading Version...');
+
   const formData = new FormData();
   formData.append('version_no', versionNo);
   formData.append('status', status);
-  formData.append('pdf_file', fileInput.files[0]);
+  formData.append('pdf_file', file);
 
   try {
     const res = await fetch(`${API_BASE}/sops/${sopId}/versions`, {
@@ -759,7 +965,9 @@ async function handleUploadVersion(e) {
     }
   } catch (err) {
     console.error(err);
-    showToast('Network error while uploading version.', 'error', { reload: true });
+    showToast('Network error while uploading version.', 'error');
+  } finally {
+    setButtonLoading(submitBtn, false);
   }
 }
 
@@ -782,7 +990,7 @@ async function changeVersionStatus(versionId, newStatus, sopId) {
     }
   } catch (err) {
     console.error(err);
-    showToast('Failed to connect to server.', 'error', { reload: true });
+    showToast('Failed to connect to server.', 'error');
   }
 }
 
@@ -790,11 +998,23 @@ async function changeVersionStatus(versionId, newStatus, sopId) {
 // SCREEN 3: MEDIA LIBRARY LOADER & UPLOAD FLOW
 // ==========================================================================
 async function loadDocuments() {
-  const search = document.getElementById('doc-search-input').value;
+  const search = (document.getElementById('doc-search-input').value || '').trim();
   const serviceId = document.getElementById('doc-filter-service').value;
   const categoryId = document.getElementById('doc-filter-category').value;
   const type = document.getElementById('doc-filter-type').value;
   const dateVal = document.getElementById('doc-filter-date').value;
+
+  const grid = document.getElementById('documents-grid-container');
+  const emptyMsg = document.getElementById('no-docs-message');
+
+  grid.style.display = 'grid';
+  emptyMsg.style.display = 'none';
+  grid.innerHTML = `
+    <div style="grid-column: 1 / -1; text-align: center; padding: 40px;">
+      <i class="fa-solid fa-spinner fa-spin" style="font-size: 24px; color: var(--primary-cyan); margin-bottom: 10px;"></i>
+      <div class="text-muted">Loading media assets...</div>
+    </div>
+  `;
 
   try {
     let url = `/documents?`;
@@ -813,13 +1033,21 @@ async function loadDocuments() {
       documents = documents.filter(d => d.created_at && d.created_at.startsWith(dateVal));
     }
 
-    const grid = document.getElementById('documents-grid-container');
-    const emptyMsg = document.getElementById('no-docs-message');
     grid.innerHTML = '';
+
+    const hasActiveFilters = Boolean(search || serviceId || categoryId || type || dateVal);
 
     if (documents.length === 0) {
       grid.style.display = 'none';
       emptyMsg.style.display = 'block';
+      emptyMsg.innerHTML = `
+        <div class="empty-state-card">
+          <i class="fa-solid ${hasActiveFilters ? 'fa-filter-circle-xmark' : 'fa-photo-film'}"></i>
+          <h4>${hasActiveFilters ? 'No matching media or documents found' : 'No media assets available'}</h4>
+          <p>${hasActiveFilters ? 'No assets matched your search filter criteria.' : 'Publish your first PDF document or video guide.'}</p>
+          ${hasActiveFilters ? '<button class="btn btn-secondary" onclick="resetDocFilters()"><i class="fa-solid fa-rotate-left"></i> Reset Filters</button>' : ''}
+        </div>
+      `;
       return;
     }
 
@@ -856,7 +1084,7 @@ async function loadDocuments() {
           <div class="doc-format-icon ${formatClass}">
             <i class="fa-solid ${formatIcon}"></i>
           </div>
-          <span class="badge badge-active">${escapeHtml(doc.category_name)}</span>
+          <span class="badge badge-active">${escapeHtml(doc.category_name || 'General')}</span>
         </div>
         <div class="doc-card-body">
           <h4>${escapeHtml(doc.title)}</h4>
@@ -867,7 +1095,7 @@ async function loadDocuments() {
         </div>
         <div class="doc-card-footer">
           <div class="doc-meta-info">
-            <span class="text-muted" style="font-size:10px;">${escapeHtml(doc.service_name)}</span>
+            <span class="text-muted" style="font-size:10px;">${escapeHtml(doc.service_name || 'Ocean Services')}</span>
             <span class="text-muted" style="font-size:9px;">Released: ${date}</span>
           </div>
           <button class="btn btn-primary" onclick="${actionFn}" style="font-size:12px; padding:6px 12px;">
@@ -879,18 +1107,42 @@ async function loadDocuments() {
     });
   } catch (err) {
     console.error('Error loading documents:', err);
+    grid.style.display = 'none';
+    emptyMsg.style.display = 'block';
+    emptyMsg.innerHTML = `
+      <div class="empty-state-card">
+        <i class="fa-solid fa-triangle-exclamation" style="color: var(--status-critical);"></i>
+        <h4>Unable to load media assets</h4>
+        <p>Please check your connection and try again.</p>
+        <button class="btn btn-secondary" onclick="loadDocuments()"><i class="fa-solid fa-rotate"></i> Retry</button>
+      </div>
+    `;
   }
 }
 
 // Add General Media Asset
 async function handleAddDoc(e) {
   e.preventDefault();
+  const submitBtn = e.target.querySelector('button[type="submit"]');
   const format = document.querySelector('input[name="doc_type"]:checked').value;
-  const title = document.getElementById('doc-title').value;
-  const description = document.getElementById('doc-description').value;
+  const title = document.getElementById('doc-title').value.trim();
+  const description = document.getElementById('doc-description').value.trim();
   const service_id = document.getElementById('doc-service').value;
   const category_id = document.getElementById('doc-category').value;
-  const tags = document.getElementById('doc-tags').value;
+  const tags = document.getElementById('doc-tags').value.trim();
+
+  if (!title) {
+    showToast('Please enter a document title.', 'error');
+    return;
+  }
+  if (!service_id) {
+    showToast('Please select an Ocean Service.', 'error');
+    return;
+  }
+  if (!category_id) {
+    showToast('Please select a Category.', 'error');
+    return;
+  }
 
   const formData = new FormData();
   formData.append('type', format);
@@ -906,15 +1158,22 @@ async function handleAddDoc(e) {
       showToast('Please select a PDF document file to publish.', 'error');
       return;
     }
-    formData.append('pdf_file', fileInput.files[0]);
+    const file = fileInput.files[0];
+    if (!file.name.toLowerCase().endsWith('.pdf') && file.type !== 'application/pdf') {
+      showToast('Only PDF files are supported for document upload.', 'error');
+      return;
+    }
+    formData.append('pdf_file', file);
   } else {
-    const videoUrl = document.getElementById('doc-video-url').value;
+    const videoUrl = document.getElementById('doc-video-url').value.trim();
     if (!videoUrl) {
       showToast('Please enter a video URL stream link.', 'error');
       return;
     }
     formData.append('video_url', videoUrl);
   }
+
+  setButtonLoading(submitBtn, true, 'Publishing Media...');
 
   try {
     const res = await fetch(`${API_BASE}/documents`, {
@@ -938,7 +1197,9 @@ async function handleAddDoc(e) {
     }
   } catch (err) {
     console.error(err);
-    showToast('Failed to connect to server during upload.', 'error', { reload: true });
+    showToast('Failed to connect to server during upload.', 'error');
+  } finally {
+    setButtonLoading(submitBtn, false);
   }
 }
 
@@ -946,12 +1207,32 @@ async function handleAddDoc(e) {
 // SCREEN 4: SERVICE DIRECTORY MANAGER
 // ==========================================================================
 async function loadServices() {
+  const grid = document.getElementById('services-admin-container');
+  grid.innerHTML = `
+    <div style="grid-column: 1 / -1; text-align: center; padding: 40px;">
+      <i class="fa-solid fa-spinner fa-spin" style="font-size: 24px; color: var(--primary-cyan); margin-bottom: 10px;"></i>
+      <div class="text-muted">Loading services directory...</div>
+    </div>
+  `;
+
   try {
     const res = await fetchWithAuth('/services');
     const services = await res.json();
 
-    const grid = document.getElementById('services-admin-container');
     grid.innerHTML = '';
+
+    if (services.length === 0) {
+      grid.innerHTML = `
+        <div style="grid-column: 1 / -1;">
+          <div class="empty-state-card">
+            <i class="fa-solid fa-sliders"></i>
+            <h4>No operational services found</h4>
+            <p>Click "Add Service" above to configure a new ocean service.</p>
+          </div>
+        </div>
+      `;
+      return;
+    }
 
     services.forEach(svc => {
       const card = document.createElement('div');
@@ -963,7 +1244,7 @@ async function loadServices() {
         <div class="service-card-top">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 8px;">
             <h3>${escapeHtml(svc.service_name)}</h3>
-            <span class="badge ${statusBadgeClass}">${svc.status}</span>
+            <span class="badge ${statusBadgeClass}">${escapeHtml(svc.status)}</span>
           </div>
           <p>${escapeHtml(svc.description || 'No description provided.')}</p>
         </div>
@@ -983,19 +1264,37 @@ async function loadServices() {
     });
   } catch (err) {
     console.error('Error loading services directory:', err);
+    grid.innerHTML = `
+      <div style="grid-column: 1 / -1;">
+        <div class="empty-state-card">
+          <i class="fa-solid fa-triangle-exclamation" style="color: var(--status-critical);"></i>
+          <h4>Unable to load services</h4>
+          <p>Please check your connection and try again.</p>
+          <button class="btn btn-secondary" onclick="loadServices()"><i class="fa-solid fa-rotate"></i> Retry</button>
+        </div>
+      </div>
+    `;
   }
 }
 
 // Save Service Details (Creates or updates service)
 async function handleSaveService(e) {
   e.preventDefault();
+  const submitBtn = e.target.querySelector('button[type="submit"]');
   const id = document.getElementById('service-id-field').value;
-  const service_name = document.getElementById('service-name-field').value;
-  const description = document.getElementById('service-desc-field').value;
+  const service_name = document.getElementById('service-name-field').value.trim();
+  const description = document.getElementById('service-desc-field').value.trim();
   const status = document.getElementById('service-status-field').value;
+
+  if (!service_name) {
+    showToast('Please enter a service name.', 'error');
+    return;
+  }
 
   const url = id ? `/services/${id}` : `/services`;
   const method = id ? 'PUT' : 'POST';
+
+  setButtonLoading(submitBtn, true, 'Saving Service...');
 
   try {
     const res = await fetchWithAuth(url, {
@@ -1017,6 +1316,8 @@ async function handleSaveService(e) {
   } catch (err) {
     console.error(err);
     showToast('Failed to save service details.', 'error');
+  } finally {
+    setButtonLoading(submitBtn, false);
   }
 }
 
@@ -1041,7 +1342,7 @@ async function handleDeleteService(id, name) {
     }
   } catch (err) {
     console.error(err);
-    showToast('Connection error during deletion.', 'error', { reload: true });
+    showToast('Connection error during deletion.', 'error');
   }
 }
 
@@ -1059,61 +1360,126 @@ function openEditServiceModal(id, name, desc, status) {
 // SCREEN 4b: USER ACCOUNT MANAGEMENT
 // ==========================================================================
 async function loadUsers() {
+  const tbody = document.getElementById('users-list');
+  if (!tbody) return;
+  tbody.innerHTML = `
+    <tr>
+      <td colspan="6" class="text-center" style="padding: 30px;">
+        <i class="fa-solid fa-spinner fa-spin" style="font-size: 20px; color: var(--primary-cyan); margin-bottom: 8px;"></i>
+        <div class="text-muted">Loading user accounts...</div>
+      </td>
+    </tr>
+  `;
+
   try {
     const res = await fetchWithAuth('/users');
-    const users = await res.json();
-
-    const tbody = document.getElementById('users-list');
-    if (!tbody) return;
-    tbody.innerHTML = '';
-
-    if (users.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="6" class="text-center text-muted">No user accounts found.</td></tr>`;
-      return;
-    }
-
-    users.forEach(u => {
-      const tr = document.createElement('tr');
-      const formattedDate = new Date(u.created_at).toLocaleDateString('en-US', {
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric'
-      });
-
-      const roleBadge = u.role === 'Admin' ? 'badge-approved' : 'badge-active';
-
-      let actions = '';
-      if (currentUser && currentUser.id !== u.id) {
-        actions = `
-          <button class="btn btn-danger btn-icon" onclick="handleDeleteUser(${u.id}, '${escapeQuote(u.name)}')" title="Delete User Account">
-            <i class="fa-solid fa-user-minus"></i>
-          </button>
-        `;
-      } else {
-        actions = `<span class="text-muted" style="font-size:11px;">(Current User)</span>`;
-      }
-
-      tr.innerHTML = `
-        <td><code class="text-muted">#${u.id}</code></td>
-        <td><strong>${escapeHtml(u.name)}</strong></td>
-        <td>${escapeHtml(u.email)}</td>
-        <td><span class="badge ${roleBadge}">${escapeHtml(u.role)}</span></td>
-        <td>${formattedDate}</td>
-        <td class="text-right">${actions}</td>
-      `;
-      tbody.appendChild(tr);
-    });
+    cachedUsers = await res.json();
+    renderFilteredUsers();
   } catch (err) {
     console.error('Error loading users list:', err);
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="6">
+          <div class="empty-state-card">
+            <i class="fa-solid fa-triangle-exclamation" style="color: var(--status-critical);"></i>
+            <h4>Unable to load users</h4>
+            <p>Please check your connection and try again.</p>
+            <button class="btn btn-secondary" onclick="loadUsers()"><i class="fa-solid fa-rotate"></i> Retry</button>
+          </div>
+        </td>
+      </tr>
+    `;
   }
+}
+
+function renderFilteredUsers() {
+  const search = (document.getElementById('user-search-input')?.value || '').trim().toLowerCase();
+  const tbody = document.getElementById('users-list');
+  if (!tbody) return;
+  tbody.innerHTML = '';
+
+  let users = cachedUsers || [];
+  if (search) {
+    users = users.filter(u => 
+      (u.name && u.name.toLowerCase().includes(search)) ||
+      (u.email && u.email.toLowerCase().includes(search)) ||
+      (u.role && u.role.toLowerCase().includes(search))
+    );
+  }
+
+  if (users.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="6">
+          <div class="empty-state-card">
+            <i class="fa-solid ${search ? 'fa-user-slash' : 'fa-users'}"></i>
+            <h4>${search ? 'No matching users found' : 'No user accounts found'}</h4>
+            <p>${search ? 'Try adjusting your search query.' : 'Click "Add User" above to create user accounts.'}</p>
+          </div>
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  users.forEach(u => {
+    const tr = document.createElement('tr');
+    const formattedDate = new Date(u.created_at).toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric'
+    });
+
+    const roleBadge = u.role === 'Admin' ? 'badge-approved' : 'badge-active';
+
+    let actions = '';
+    if (currentUser && currentUser.id !== u.id) {
+      actions = `
+        <button class="btn btn-danger btn-icon" onclick="handleDeleteUser(${u.id}, '${escapeQuote(u.name)}')" title="Delete User Account">
+          <i class="fa-solid fa-user-minus"></i>
+        </button>
+      `;
+    } else {
+      actions = `<span class="text-muted" style="font-size:11px;">(Current User)</span>`;
+    }
+
+    tr.innerHTML = `
+      <td><code class="text-muted">#${u.id}</code></td>
+      <td><strong>${escapeHtml(u.name)}</strong></td>
+      <td>${escapeHtml(u.email)}</td>
+      <td><span class="badge ${roleBadge}">${escapeHtml(u.role)}</span></td>
+      <td>${formattedDate}</td>
+      <td class="text-right">${actions}</td>
+    `;
+    tbody.appendChild(tr);
+  });
 }
 
 async function handleCreateUser(e) {
   e.preventDefault();
-  const name = document.getElementById('user-name').value;
-  const email = document.getElementById('user-email').value;
+  const submitBtn = e.target.querySelector('button[type="submit"]');
+  const name = document.getElementById('user-name').value.trim();
+  const email = document.getElementById('user-email').value.trim();
   const password = document.getElementById('user-password').value;
   const role = document.getElementById('user-role').value;
+
+  if (!name) {
+    showToast('Please enter user name.', 'error');
+    return;
+  }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!email || !emailRegex.test(email)) {
+    showToast('Please enter a valid email address.', 'error');
+    return;
+  }
+
+  if (!password || password.length < 4) {
+    showToast('Password must be at least 4 characters long.', 'error');
+    return;
+  }
+
+  setButtonLoading(submitBtn, true, 'Creating User...');
 
   try {
     const res = await fetchWithAuth('/users', {
@@ -1134,6 +1500,8 @@ async function handleCreateUser(e) {
   } catch (err) {
     console.error(err);
     showToast('Failed to create user account.', 'error');
+  } finally {
+    setButtonLoading(submitBtn, false);
   }
 }
 
@@ -1164,40 +1532,86 @@ async function handleDeleteUser(id, name) {
 // SCREEN 5: AUDIT TRAIL LOGS
 // ==========================================================================
 async function loadLogs() {
+  const tbody = document.getElementById('logs-list');
+  tbody.innerHTML = `
+    <tr>
+      <td colspan="4" class="text-center" style="padding: 30px;">
+        <i class="fa-solid fa-spinner fa-spin" style="font-size: 20px; color: var(--primary-cyan); margin-bottom: 8px;"></i>
+        <div class="text-muted">Loading audit logs...</div>
+      </td>
+    </tr>
+  `;
+
   try {
     const res = await fetchWithAuth('/logs');
-    const logs = await res.json();
-
-    const tbody = document.getElementById('logs-list');
-    tbody.innerHTML = '';
-
-    if (logs.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="4" class="text-center text-muted">No activities logged yet.</td></tr>`;
-      return;
-    }
-
-    logs.forEach(log => {
-      const tr = document.createElement('tr');
-      const time = new Date(log.timestamp).toLocaleString('en-US', {
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit'
-      });
-
-      tr.innerHTML = `
-        <td><code class="text-muted">${time}</code></td>
-        <td><strong>${escapeHtml(log.user_name || 'System')}</strong> <br><span class="text-muted" style="font-size:10px;">${escapeHtml(log.user_email || '')}</span></td>
-        <td>${escapeHtml(log.action)}</td>
-        <td><code style="background:rgba(255,255,255,0.05); padding:2px 6px; border-radius:4px;">${log.reference_id || 'N/A'}</code></td>
-      `;
-      tbody.appendChild(tr);
-    });
+    cachedLogs = await res.json();
+    renderFilteredLogs();
   } catch (err) {
     console.error('Error loading activity logs:', err);
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="4">
+          <div class="empty-state-card">
+            <i class="fa-solid fa-triangle-exclamation" style="color: var(--status-critical);"></i>
+            <h4>Unable to load audit logs</h4>
+            <p>Please check your connection and try again.</p>
+            <button class="btn btn-secondary" onclick="loadLogs()"><i class="fa-solid fa-rotate"></i> Retry</button>
+          </div>
+        </td>
+      </tr>
+    `;
   }
+}
+
+function renderFilteredLogs() {
+  const search = (document.getElementById('log-search-input')?.value || '').trim().toLowerCase();
+  const tbody = document.getElementById('logs-list');
+  tbody.innerHTML = '';
+
+  let logs = cachedLogs || [];
+  if (search) {
+    logs = logs.filter(l =>
+      (l.action && l.action.toLowerCase().includes(search)) ||
+      (l.user_name && l.user_name.toLowerCase().includes(search)) ||
+      (l.user_email && l.user_email.toLowerCase().includes(search)) ||
+      (l.reference_id && String(l.reference_id).toLowerCase().includes(search))
+    );
+  }
+
+  if (logs.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="4">
+          <div class="empty-state-card">
+            <i class="fa-solid ${search ? 'fa-filter-circle-xmark' : 'fa-clipboard-list'}"></i>
+            <h4>${search ? 'No matching audit records found' : 'No activities logged yet'}</h4>
+            <p>${search ? 'Try adjusting your search query.' : 'System operations and user actions will be recorded here.'}</p>
+          </div>
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  logs.forEach(log => {
+    const tr = document.createElement('tr');
+    const time = new Date(log.timestamp).toLocaleString('en-US', {
+      month: 'short',
+      day: 'numeric',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    });
+
+    tr.innerHTML = `
+      <td><code class="text-muted">${time}</code></td>
+      <td><strong>${escapeHtml(log.user_name || 'System')}</strong> <br><span class="text-muted" style="font-size:10px;">${escapeHtml(log.user_email || '')}</span></td>
+      <td>${escapeHtml(log.action)}</td>
+      <td><code style="background:rgba(255,255,255,0.05); padding:2px 6px; border-radius:4px;">${escapeHtml(String(log.reference_id || 'N/A'))}</code></td>
+    `;
+    tbody.appendChild(tr);
+  });
 }
 
 // ==========================================================================
@@ -1246,7 +1660,7 @@ document.getElementById('btn-close-video-viewer').addEventListener('click', () =
 // ==========================================================================
 function exportToCSV(filename, headers, dataRows) {
   if (!dataRows || dataRows.length === 0) {
-    showToast('No data available to export.', 'info');
+    showToast('No records available to export.', 'info');
     return;
   }
   let csvContent = '\uFEFF'; // UTF-8 BOM for Excel compatibility
@@ -1267,42 +1681,66 @@ function exportToCSV(filename, headers, dataRows) {
   document.body.removeChild(link);
   URL.revokeObjectURL(url);
 
-  showToast(`Exported ${dataRows.length} record(s) to ${filename}`, 'success');
+  showToast(`Successfully exported ${dataRows.length} record(s) to ${filename}`, 'success');
 }
 
 async function exportSOPsCSV() {
+  const btn = document.getElementById('btn-export-sops-csv');
+  setButtonLoading(btn, true, 'Exporting...');
   try {
     const res = await fetchWithAuth('/sops');
     const sops = await res.json();
+    if (!sops || sops.length === 0) {
+      showToast('No SOP records available to export.', 'info');
+      return;
+    }
     const headers = ['SOP ID', 'Title', 'Service Name', 'Category Name', 'Created At'];
     const rows = sops.map(s => [s.id, s.title, s.service_name, s.category_name, s.created_at]);
     exportToCSV(`OceanServices_SOPs_${new Date().toISOString().slice(0, 10)}.csv`, headers, rows);
   } catch (err) {
     showToast('Failed to export SOPs list.', 'error');
+  } finally {
+    setButtonLoading(btn, false);
   }
 }
 
 async function exportMediaCSV() {
+  const btn = document.getElementById('btn-export-docs-csv');
+  setButtonLoading(btn, true, 'Exporting...');
   try {
     const res = await fetchWithAuth('/documents');
     const docs = await res.json();
+    if (!docs || docs.length === 0) {
+      showToast('No media records available to export.', 'info');
+      return;
+    }
     const headers = ['Document ID', 'Format Type', 'Title', 'Service Name', 'Category Name', 'Tags', 'Created At'];
     const rows = docs.map(d => [d.id, d.type, d.title, d.service_name, d.category_name, d.tags || '', d.created_at]);
     exportToCSV(`OceanServices_MediaLibrary_${new Date().toISOString().slice(0, 10)}.csv`, headers, rows);
   } catch (err) {
     showToast('Failed to export media library.', 'error');
+  } finally {
+    setButtonLoading(btn, false);
   }
 }
 
 async function exportLogsCSV() {
+  const btn = document.getElementById('btn-export-logs-csv');
+  setButtonLoading(btn, true, 'Exporting...');
   try {
     const res = await fetchWithAuth('/logs');
     const logs = await res.json();
+    if (!logs || logs.length === 0) {
+      showToast('No audit logs available to export.', 'info');
+      return;
+    }
     const headers = ['Log ID', 'Timestamp', 'User ID', 'User Name', 'User Email', 'Action', 'Reference ID'];
     const rows = logs.map(l => [l.id, l.timestamp, l.user_id, l.user_name || 'System', l.user_email || '', l.action, l.reference_id || 'N/A']);
     exportToCSV(`OceanServices_AuditLogs_${new Date().toISOString().slice(0, 10)}.csv`, headers, rows);
   } catch (err) {
     showToast('Failed to export audit logs.', 'error');
+  } finally {
+    setButtonLoading(btn, false);
   }
 }
 
@@ -1310,7 +1748,7 @@ async function exportLogsCSV() {
 // GLOBAL UI UTILITY METHODS
 // ==========================================================================
 // Animate numeric count up for stat elements
-function animateCount(el, target, duration = 900) {
+function animateCount(el, target, duration = 800) {
   if (!el) return;
   const start = 0;
   const end = Number(target) || 0;
@@ -1328,11 +1766,17 @@ function animateCount(el, target, duration = 900) {
 }
 
 function openModal(modalId) {
-  document.getElementById(modalId).classList.add('active-modal');
+  const modal = document.getElementById(modalId);
+  if (modal) {
+    modal.classList.add('active-modal');
+  }
 }
 
 function closeModal(modalId) {
-  document.getElementById(modalId).classList.remove('active-modal');
+  const modal = document.getElementById(modalId);
+  if (modal) {
+    modal.classList.remove('active-modal');
+  }
   // Clear any active sources on close
   if (modalId === 'modal-pdf-viewer') {
     document.getElementById('pdf-viewer-frame').src = '';
@@ -1341,8 +1785,8 @@ function closeModal(modalId) {
 
 // HTML escape helper to prevent XSS
 function escapeHtml(str) {
-  if (!str) return '';
-  return str
+  if (str === null || str === undefined) return '';
+  return String(str)
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
@@ -1352,40 +1796,63 @@ function escapeHtml(str) {
 
 // Escape quotes in onclick inline functions
 function escapeQuote(str) {
-  if (!str) return '';
-  return str.replace(/'/g, "\\'");
+  if (str === null || str === undefined) return '';
+  return String(str).replace(/'/g, "\\'");
 }
 
-// Toast Alert System
+// Toast Alert System with guaranteed timeout removal and close button
 function showToast(message, type = 'info', options = {}) {
   const container = document.getElementById('toast-container');
+  if (!container) return;
+
   const toast = document.createElement('div');
   toast.className = `toast toast-${type}`;
 
-  let iconMarkup = `<i class="fa-solid fa-info-circle"></i>`;
+  let iconMarkup = `<i class="fa-solid fa-circle-info"></i>`;
   if (type === 'success') {
-    iconMarkup = `<i class="fa-solid fa-check-circle"></i>`;
-  }
-
-  if (type === 'error') {
-    const loaderClass = options.reload ? 'toast-ocean-reload' : 'toast-ocean-loader';
-    iconMarkup = `<span class="${loaderClass}"><span></span><span></span><span></span></span>`;
+    iconMarkup = `<i class="fa-solid fa-circle-check"></i>`;
+  } else if (type === 'error') {
+    iconMarkup = `<i class="fa-solid fa-circle-exclamation"></i>`;
+  } else if (type === 'warning') {
+    iconMarkup = `<i class="fa-solid fa-triangle-exclamation"></i>`;
   }
 
   toast.innerHTML = `
     ${iconMarkup}
-    <span>${message}</span>
+    <span class="toast-message-text">${escapeHtml(message)}</span>
+    <button type="button" class="toast-close-btn" aria-label="Dismiss notification">&times;</button>
   `;
+
+  // Attach manual dismiss listener
+  const closeBtn = toast.querySelector('.toast-close-btn');
+  closeBtn.addEventListener('click', () => {
+    dismissToast(toast);
+  });
 
   container.appendChild(toast);
 
-  // Automatically fade out and remove after 4 seconds
+  // Auto dismiss after 3.8s
+  const autoDismissTimer = setTimeout(() => {
+    dismissToast(toast);
+  }, 3800);
+
+  // Pause on hover
+  toast.addEventListener('mouseenter', () => {
+    clearTimeout(autoDismissTimer);
+  });
+  toast.addEventListener('mouseleave', () => {
+    setTimeout(() => dismissToast(toast), 1500);
+  });
+}
+
+function dismissToast(toastEl) {
+  if (!toastEl || toastEl.classList.contains('toast-hiding')) return;
+  toastEl.classList.add('toast-hiding');
   setTimeout(() => {
-    toast.style.animation = 'toastSlideIn 0.3s ease-out reverse';
-    toast.addEventListener('animationend', () => {
-      toast.remove();
-    });
-  }, 4000);
+    if (toastEl.parentNode) {
+      toastEl.remove();
+    }
+  }, 280);
 }
 
 // Debounce helper for instant searches
