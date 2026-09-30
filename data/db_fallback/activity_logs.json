@@ -607,5 +607,54 @@
     "action": "Deleted User Account: Marine Scientist Test",
     "reference_id": "3",
     "timestamp": "2026-09-30T10:25:09.673Z"
+  },
+  {
+    "id": 88,
+    "user_id": 1,
+    "action": "User Logged In",
+    "reference_id": "1",
+    "timestamp": "2026-09-30T11:59:46.557Z"
+  },
+  {
+    "id": 89,
+    "user_id": 1,
+    "action": "Created Ocean Service: Autonomous Marine Gliders Monitoring",
+    "reference_id": "9",
+    "timestamp": "2026-09-30T11:59:46.635Z"
+  },
+  {
+    "id": 90,
+    "user_id": 1,
+    "action": "Updated Ocean Service: Autonomous Marine Gliders Monitoring",
+    "reference_id": "9",
+    "timestamp": "2026-09-30T11:59:46.653Z"
+  },
+  {
+    "id": 91,
+    "user_id": 1,
+    "action": "Deleted Ocean Service: Autonomous Marine Gliders Monitoring",
+    "reference_id": "9",
+    "timestamp": "2026-09-30T11:59:46.667Z"
+  },
+  {
+    "id": 92,
+    "user_id": 1,
+    "action": "Created User Account: Marine Scientist Test (User)",
+    "reference_id": "3",
+    "timestamp": "2026-09-30T11:59:46.774Z"
+  },
+  {
+    "id": 93,
+    "user_id": 1,
+    "action": "Deleted User Account: Marine Scientist Test",
+    "reference_id": "3",
+    "timestamp": "2026-09-30T11:59:46.788Z"
+  },
+  {
+    "id": 94,
+    "user_id": 1,
+    "action": "User Logged In",
+    "reference_id": "1",
+    "timestamp": "2026-09-30T12:03:00.096Z"
   }
 ]
